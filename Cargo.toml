@@ -163,6 +163,7 @@ members = [
 	"primitives/application-crypto/test",
 	"primitives/arithmetic",
 	"primitives/arithmetic/fuzzer",
+	"primitives/arkworks",
 	"primitives/authority-discovery",
 	"primitives/authorship",
 	"primitives/beefy",

@@ -1,0 +1,27 @@
+[package]
+name = "sp-arkworks"
+version = "0.0.1"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2021"
+license = "Apache-2.0"
+homepage = "https://substrate.io"
+repository = "https://github.com/paritytech/substrate/"
+description = "Primitive core crate hashing implementation."
+documentation = "https://docs.rs/sp-core-hashing"
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+ark-ec = { path = "/Users/marcin/personal/arkworks/algebra/ec" }
+ark-ff = { path = "/Users/marcin/personal/arkworks/algebra/ff" }
+ark-serialize = { path = "/Users/marcin/personal/arkworks/algebra/serialize" }
+ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false }
+ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/" }
+sp-std = { version = "4.0.0", default-features = false, path = "../std" }
+
+[features]
+default = ["std"]
+std = [
+	"sp-std/std",
+]
