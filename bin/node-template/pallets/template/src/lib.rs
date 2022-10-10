@@ -4,7 +4,6 @@
 /// Learn more about FRAME and the core library of Substrate FRAME pallets:
 /// <https://docs.substrate.io/reference/frame-pallets/>
 pub use pallet::*;
-
 #[cfg(test)]
 mod mock;
 
@@ -16,6 +15,13 @@ mod benchmarking;
 
 #[frame_support::pallet]
 pub mod pallet {
+	use ark_bls12_381::{Bls12_381, G1Affine, G2Affine};
+	use ark_ec::{
+		pairing::{self, *},
+		AffineRepr, CurveGroup, Group,
+	};
+	use ark_ff::{Field, PrimeField};
+	use ark_serialize::{CanonicalSerialize, Compress};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -62,6 +68,28 @@ pub mod pallet {
 	// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
+		pub fn pairing_host(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			let g1 = G1Affine::generator();
+			let g2 = G2Affine::generator();
+
+			let mut g1_serialized = [0u8; 48];
+			let mut g2_serialized = [0u8; 96];
+			g1.serialize_with_mode(g1_serialized.as_mut_slice(), Compress::Yes).unwrap();
+			g2.serialize_with_mode(g2_serialized.as_mut_slice(), Compress::Yes).unwrap();
+			sp_io::crypto::pairing(&g1_serialized, &g2_serialized);
+
+			Ok(())
+		}
+
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
+		pub fn pairing_arkworks(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			//for a fair benchmark, this would probably need some deserialization from the arguments
+			let out = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
+
+			Ok(())
+		}
+
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]

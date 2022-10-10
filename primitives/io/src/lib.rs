@@ -57,6 +57,9 @@ use sp_core::{
 };
 
 #[cfg(feature = "std")]
+use sp_arkworks::*;
+
+#[cfg(feature = "std")]
 use sp_trie::{LayoutV0, LayoutV1, TrieConfiguration};
 
 use sp_runtime_interface::{
@@ -1072,6 +1075,11 @@ pub trait Crypto {
 			.recover_ecdsa(&msg, &sig)
 			.map_err(|_| EcdsaVerifyError::BadSignature)?;
 		Ok(pubkey.serialize())
+	}
+
+	/// Compute a pairing
+	fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
+		sp_arkworks::pairing(a, b)
 	}
 }
 

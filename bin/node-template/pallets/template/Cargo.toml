@@ -20,10 +20,17 @@ scale-info = { version = "2.1.1", default-features = false, features = ["derive"
 frame-benchmarking = { version = "4.0.0-dev", default-features = false, optional = true, path = "../../../../frame/benchmarking" }
 frame-support = { version = "4.0.0-dev", default-features = false, path = "../../../../frame/support" }
 frame-system = { version = "4.0.0-dev", default-features = false, path = "../../../../frame/system" }
+ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false }
+ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/", default-features = false }
+ark-sub-bls12-381 = { package = "ark-bls12-381", git = "https://github.com/volcano-mash/curves/", default-features = false, branch = "ark-substrate" }
+sp-arkworks = { version = "0.0.1", default-features = false, path = "../../../../primitives/arkworks" }
+sp-io = { version = "6.0.0", default-features = false, path = "../../../../primitives/io" }
 
 [dev-dependencies]
 sp-core = { version = "6.0.0", default-features = false, path = "../../../../primitives/core" }
-sp-io = { version = "6.0.0", default-features = false, path = "../../../../primitives/io" }
 sp-runtime = { version = "6.0.0", default-features = false, path = "../../../../primitives/runtime" }
 
 [features]
