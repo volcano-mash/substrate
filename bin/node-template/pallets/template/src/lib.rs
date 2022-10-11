@@ -70,7 +70,7 @@ pub mod pallet {
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn pairing_host(origin: OriginFor<T>, something: u32) -> DispatchResult {
 
-			sp_arkworks::pairing(&[0u8; 32], &[0u8; 32]);
+			sp_io::crypto::pairing(&[0u8; 32], &[0u8; 32]);
 
 			Ok(())
 		}
