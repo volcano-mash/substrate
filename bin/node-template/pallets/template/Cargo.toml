@@ -26,10 +26,10 @@ ark-serialize = { path = "/Users/marcin/personal/arkworks/algebra/serialize" }
 ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false }
 ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/" }
 sp-arkworks = { version = "0.0.1", default-features = false, path = "../../../../primitives/arkworks" }
+sp-io = { version = "6.0.0", default-features = false, path = "../../../../primitives/io" }
 
 [dev-dependencies]
 sp-core = { version = "6.0.0", default-features = false, path = "../../../../primitives/core" }
-sp-io = { version = "6.0.0", default-features = false, path = "../../../../primitives/io" }
 sp-runtime = { version = "6.0.0", default-features = false, path = "../../../../primitives/runtime" }
 
 [features]

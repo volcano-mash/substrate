@@ -4,6 +4,5 @@
     --wasm-execution=compiled \
     --pallet pallet_template \
     --extrinsic '*' \
-    --steps 50 \
-    --repeat 20 \
+    --repeat 1000 \
     --output pallets/transfer-weight.rs
