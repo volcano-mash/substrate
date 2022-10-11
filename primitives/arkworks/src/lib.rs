@@ -33,7 +33,7 @@ use sp_std::vec::Vec;
 pub fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
 	let res = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
 	// serialize the result
-	let mut res_bytes = [0u8; 96];
+	let mut res_bytes = [0u8; 576];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
 	res_bytes.to_vec()
 }
