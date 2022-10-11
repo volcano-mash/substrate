@@ -20,6 +20,12 @@ scale-info = { version = "2.1.1", default-features = false, features = ["derive"
 frame-benchmarking = { version = "4.0.0-dev", default-features = false, optional = true, path = "../../../../frame/benchmarking" }
 frame-support = { version = "4.0.0-dev", default-features = false, path = "../../../../frame/support" }
 frame-system = { version = "4.0.0-dev", default-features = false, path = "../../../../frame/system" }
+ark-ec = { path = "/Users/marcin/personal/arkworks/algebra/ec" }
+ark-ff = { path = "/Users/marcin/personal/arkworks/algebra/ff" }
+ark-serialize = { path = "/Users/marcin/personal/arkworks/algebra/serialize" }
+ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false }
+ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/" }
+sp-arkworks = { version = "0.0.1", default-features = false, path = "../../../../primitives/arkworks" }
 
 [dev-dependencies]
 sp-core = { version = "6.0.0", default-features = false, path = "../../../../primitives/core" }

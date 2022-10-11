@@ -4,7 +4,6 @@
 /// Learn more about FRAME and the core library of Substrate FRAME pallets:
 /// <https://docs.substrate.io/reference/frame-pallets/>
 pub use pallet::*;
-
 #[cfg(test)]
 mod mock;
 
@@ -16,6 +15,14 @@ mod benchmarking;
 
 #[frame_support::pallet]
 pub mod pallet {
+	use ark_bls12_381::{
+		Bls12_381, G1Affine, G2Affine,
+	};
+	use ark_ec::{
+		pairing::{self, *},
+		AffineRepr, CurveGroup, Group,
+	};
+	use ark_ff::{Field, PrimeField};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -62,6 +69,34 @@ pub mod pallet {
 	// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
+		pub fn pairing_host(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			sp_arkworks::pairing(&[0u8; 32], &[0u8; 32]);
+			// Update storage.
+			<Something<T>>::put(something);
+
+			// Emit an event.
+			Self::deposit_event(Event::SomethingStored(something, who));
+			// Return a successful DispatchResultWithPostInfo
+			Ok(())
+		}
+
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
+		pub fn pairing_arkworks(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			let out = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
+			// Update storage.
+			<Something<T>>::put(something);
+
+			// Emit an event.
+			Self::deposit_event(Event::SomethingStored(something, who));
+			// Return a successful DispatchResultWithPostInfo
+			Ok(())
+		}
+
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
