@@ -311,3 +311,10 @@ inherits = "release"
 lto = "fat"
 # https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
 codegen-units = 1
+
+
+[patch.crates-io]
+ark-std = { git = "https://github.com/arkworks-rs/std" }
+ark-ec = { path = "/Users/marcin/personal/arkworks/algebra/ec" }
+ark-ff = { path = "/Users/marcin/personal/arkworks/algebra/ff" }
+ark-serialize = { path = "/Users/marcin/personal/arkworks/algebra/serialize" }
