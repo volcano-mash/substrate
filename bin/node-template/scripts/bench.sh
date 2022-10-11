@@ -1,4 +1,4 @@
-/Users/marcin/dev/substrate/target/production/node-template benchmark pallet \
+/Users/marcin/dev/substrate/target/release/node-template benchmark pallet \
     --chain dev \
     --execution=wasm \
     --wasm-execution=compiled \
