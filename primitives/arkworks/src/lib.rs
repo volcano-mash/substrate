@@ -27,11 +27,13 @@ use ark_ec::{
 	AffineRepr, CurveGroup, Group,
 };
 use ark_ff::{Field, PrimeField};
-use ark_serialize::CanonicalSerialize;
+use ark_serialize::{CanonicalSerialize, CanonicalDeserialize, Compress, Validate};
 use sp_std::vec::Vec;
 
 pub fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
-	let res = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
+	let g1 = G1Affine::deserialize_with_mode(a, Compress::Yes, Validate::Yes).unwrap();
+	let g2 = G2Affine::deserialize_with_mode(b, Compress::Yes, Validate::Yes).unwrap();
+	let res = Bls12_381::pairing(&g1, &g2);
 	// serialize the result
 	let mut res_bytes = [0u8; 576];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
