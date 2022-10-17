@@ -84,6 +84,7 @@ pub mod pallet {
 
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn pairing_arkworks(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			//for a fair benchmark, this would probably need some deserialization from the arguments
 			let out = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
 
 			Ok(())
