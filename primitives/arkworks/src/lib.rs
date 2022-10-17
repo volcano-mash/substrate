@@ -23,11 +23,11 @@
 use ark_bls12_381::{Bls12_381, G1Affine, G2Affine};
 use ark_ec::{
 	bls12::{G1Prepared, G2Prepared},
-	pairing::{self, *},
+	pairing::{self, Pairing},
 	AffineRepr, CurveGroup, Group,
 };
 use ark_ff::{Field, PrimeField};
-use ark_serialize::{CanonicalSerialize, CanonicalDeserialize, Compress, Validate};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
 
 pub fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
