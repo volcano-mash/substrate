@@ -21,6 +21,7 @@ pub mod pallet {
 		AffineRepr, CurveGroup, Group,
 	};
 	use ark_ff::{Field, PrimeField};
+	use ark_serialize::{CanonicalSerialize, Compress};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -69,8 +70,14 @@ pub mod pallet {
 	impl<T: Config> Pallet<T> {
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn pairing_host(origin: OriginFor<T>, something: u32) -> DispatchResult {
+			let g1 = G1Affine::generator();
+			let g2 = G2Affine::generator();
 
-			sp_io::crypto::pairing(&[0u8; 32], &[0u8; 32]);
+			let mut g1_serialized = [0u8; 48];
+			let mut g2_serialized = [0u8; 96];
+			g1.serialize_with_mode(g1_serialized.as_mut_slice(), Compress::Yes).unwrap();
+			g2.serialize_with_mode(g2_serialized.as_mut_slice(), Compress::Yes).unwrap();
+			sp_io::crypto::pairing(&g1_serialized, &g2_serialized);
 
 			Ok(())
 		}
