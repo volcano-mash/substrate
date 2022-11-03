@@ -113,6 +113,114 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "698b65a961a9d730fb45b6b0327e20207810c9f61ee421b082b27ba003f49e2b"
 
 [[package]]
+name = "ark-bls12-381"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/curves/#99831650f8021cb6a16481bac674420bc6c1a5a1"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+]
+
+[[package]]
+name = "ark-ec"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "ark-ff",
+ "ark-poly",
+ "ark-serialize",
+ "ark-std",
+ "derivative",
+ "hashbrown 0.12.3",
+ "itertools",
+ "num-traits",
+ "zeroize",
+]
+
+[[package]]
+name = "ark-ff"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "ark-ff-asm",
+ "ark-ff-macros",
+ "ark-serialize",
+ "ark-std",
+ "derivative",
+ "digest 0.10.3",
+ "itertools",
+ "num-bigint 0.4.3",
+ "num-traits",
+ "paste 1.0.6",
+ "rustc_version 0.4.0",
+ "zeroize",
+]
+
+[[package]]
+name = "ark-ff-asm"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "ark-ff-macros"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "num-bigint 0.4.3",
+ "num-traits",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "ark-poly"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "derivative",
+ "hashbrown 0.12.3",
+]
+
+[[package]]
+name = "ark-serialize"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "ark-serialize-derive",
+ "ark-std",
+ "digest 0.10.3",
+]
+
+[[package]]
+name = "ark-serialize-derive"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/algebra#a4362f92f00986bce7e96dc4be45167fe45e6cda"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "ark-std"
+version = "0.3.0"
+source = "git+https://github.com/arkworks-rs/std#7019830e89b69aca059ce7848e53bd99a09efbab"
+dependencies = [
+ "num-traits",
+ "rand 0.8.5",
+]
+
+[[package]]
 name = "array-bytes"
 version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1600,6 +1708,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6919815d73839e7ad218de758883aae3a257ba6759ce7a9992501efbb53d705c"
 dependencies = [
  "const-oid",
+]
+
+[[package]]
+name = "derivative"
+version = "2.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -6352,11 +6471,17 @@ dependencies = [
 name = "pallet-template"
 version = "4.0.0-dev"
 dependencies = [
+ "ark-bls12-381",
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
+ "sp-arkworks",
  "sp-core",
  "sp-io",
  "sp-runtime",
@@ -9626,6 +9751,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sp-arkworks"
+version = "0.0.1"
+dependencies = [
+ "ark-bls12-381",
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "sp-std",
+]
+
+[[package]]
 name = "sp-authority-discovery"
 version = "4.0.0-dev"
 dependencies = [
@@ -9912,6 +10049,7 @@ dependencies = [
  "parity-scale-codec",
  "parking_lot 0.12.1",
  "secp256k1",
+ "sp-arkworks",
  "sp-core",
  "sp-externalities",
  "sp-keystore",
