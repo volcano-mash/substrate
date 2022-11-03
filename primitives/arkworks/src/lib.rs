@@ -20,20 +20,52 @@
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use ark_bls12_381::{Bls12_381, G1Affine, G2Affine};
+use ark_bls12_381::{Bls12_381, Fq12, G1Affine, G2Affine};
 use ark_ec::{
-	bls12::{G1Prepared, G2Prepared},
-	pairing::{self, Pairing},
-	AffineRepr, CurveGroup, Group,
+	pairing::{MillerLoopOutput, Pairing},
 };
-use ark_ff::{Field, PrimeField};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
 
-pub fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
-	let g1 = G1Affine::deserialize_with_mode(a, Compress::Yes, Validate::Yes).unwrap();
-	let g2 = G2Affine::deserialize_with_mode(b, Compress::Yes, Validate::Yes).unwrap();
-	let res = Bls12_381::pairing(&g1, &g2);
+
+/// Compute multi pairing through arkworks
+pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
+	let g1: Vec<_> = vec_a
+		.iter()
+		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::Yes).unwrap())
+		.collect();
+	let g2: Vec<_> = vec_b
+		.iter()
+		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::Yes).unwrap())
+		.collect();
+	let res = Bls12_381::multi_pairing(&g1, &g2);
+	// serialize the result
+	let mut res_bytes = [0u8; 576];
+	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
+	res_bytes.to_vec()
+}
+
+/// Compute multi miller loop through arkworks
+pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
+	let g1: Vec<_> = a_vec
+		.iter()
+		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::Yes).unwrap())
+		.collect();
+	let g2: Vec<_> = b_vec
+		.iter()
+		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::Yes).unwrap())
+		.collect();
+	let res = Bls12_381::multi_miller_loop(&g1, &g2);
+	// serialize the result
+	let mut res_bytes = [0u8; 576];
+	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
+	res_bytes.to_vec()
+}
+
+/// Compute final exponentiation through arkworks
+pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
+	let f12 = Fq12::deserialize_with_mode(f12, Compress::Yes, Validate::Yes).unwrap();
+	let res = Bls12_381::final_exponentiation(MillerLoopOutput(f12)).unwrap();
 	// serialize the result
 	let mut res_bytes = [0u8; 576];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
