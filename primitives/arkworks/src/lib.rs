@@ -21,12 +21,9 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_bls12_381::{Bls12_381, Fq12, G1Affine, G2Affine};
-use ark_ec::{
-	pairing::{MillerLoopOutput, Pairing},
-};
+use ark_ec::pairing::{MillerLoopOutput, Pairing};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
-
 
 /// Compute multi pairing through arkworks
 pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
