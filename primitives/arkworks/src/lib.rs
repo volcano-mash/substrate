@@ -72,9 +72,7 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	// use ark_bls12_381::{G1Projective, G2Projective};
 	use ark_ec::AffineRepr;
-	// use ark_ff::Field;
 	use sp_std::vec;
 
 	/// Just to make shure that everything behaves as expected with all the (de-)serialization
