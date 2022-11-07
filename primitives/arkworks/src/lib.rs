@@ -21,7 +21,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_bls12_381::{Bls12_381, Fq12, G1Affine, G2Affine};
-use ark_ec::pairing::{MillerLoopOutput, Pairing};
+use ark_ec::{
+	pairing::{MillerLoopOutput, Pairing},
+	CurveGroup,
+};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
 
@@ -67,4 +70,40 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 	let mut res_bytes = [0u8; 576];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
 	res_bytes.to_vec()
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use ark_bls12_381::{G1Projective, G2Projective};
+	use ark_ec::AffineRepr;
+	use ark_ff::Field;
+	use sp_std::vec;
+
+	/// Just to make shure that everything behaves as expected with all the (de-)serialization happening.
+	#[test]
+	fn multi_pairing_works() {
+
+		let [a, b] = [G1Affine::generator(), G1Affine::generator()];
+		let [c, d] = [G2Affine::generator(), G2Affine::generator()];
+
+		let [mut a_serialized, mut b_serialized] = [[0u8; 48], [0u8; 48]];
+		let [mut c_serialized, mut d_serialized] = [[0u8; 96], [0u8; 96]];
+
+		a.serialize_with_mode(a_serialized.as_mut_slice(), Compress::Yes).unwrap();
+		b.serialize_with_mode(b_serialized.as_mut_slice(), Compress::Yes).unwrap();
+		c.serialize_with_mode(c_serialized.as_mut_slice(), Compress::Yes).unwrap();
+		d.serialize_with_mode(d_serialized.as_mut_slice(), Compress::Yes).unwrap();
+		let result_1 = multi_pairing(
+			vec![a_serialized.to_vec(), b_serialized.to_vec()],
+			vec![c_serialized.to_vec(), d_serialized.to_vec()],
+		);
+		let result_1 = Fq12::deserialize_with_mode(
+			&result_1[..],
+			ark_serialize::Compress::Yes,
+			ark_serialize::Validate::Yes,
+		).unwrap();
+		let result_2 = Bls12_381::multi_pairing([a, b], [c, d]);
+		assert_eq!(result_1, result_2.0);
+	}
 }

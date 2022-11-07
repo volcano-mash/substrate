@@ -78,7 +78,10 @@ pub mod pallet {
 			let mut g2_serialized = [0u8; 96];
 			g1.serialize_with_mode(g1_serialized.as_mut_slice(), Compress::Yes).unwrap();
 			g2.serialize_with_mode(g2_serialized.as_mut_slice(), Compress::Yes).unwrap();
-			sp_io::crypto::multi_pairing(vec![g1_serialized.to_vec()], vec![g2_serialized.to_vec()]);
+			sp_io::crypto::multi_pairing(
+				vec![g1_serialized.to_vec()],
+				vec![g2_serialized.to_vec()],
+			);
 
 			Ok(())
 		}
