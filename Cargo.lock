@@ -147,7 +147,7 @@ dependencies = [
 [[package]]
 name = "ark-ec"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "ark-ff",
  "ark-poly",
@@ -163,7 +163,7 @@ dependencies = [
 [[package]]
 name = "ark-ff"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "ark-ff-asm",
  "ark-ff-macros",
@@ -182,7 +182,7 @@ dependencies = [
 [[package]]
 name = "ark-ff-asm"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "quote",
  "syn",
@@ -191,7 +191,7 @@ dependencies = [
 [[package]]
 name = "ark-ff-macros"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "num-bigint 0.4.3",
  "num-traits",
@@ -203,7 +203,7 @@ dependencies = [
 [[package]]
 name = "ark-poly"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "ark-ff",
  "ark-serialize",
@@ -215,7 +215,7 @@ dependencies = [
 [[package]]
 name = "ark-serialize"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "ark-serialize-derive",
  "ark-std",
@@ -225,7 +225,7 @@ dependencies = [
 [[package]]
 name = "ark-serialize-derive"
 version = "0.3.0"
-source = "git+https://github.com/arkworks-rs/algebra#cab3eb9a88bced12d27a38bb15ca43b715274954"
+source = "git+https://github.com/arkworks-rs/algebra#c46485889795bed737ef9b8376b17d9bc42f3379"
 dependencies = [
  "proc-macro2",
  "quote",
