@@ -21,10 +21,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_bls12_381::{Bls12_381, Fq12, G1Affine, G2Affine};
-use ark_ec::{
-	pairing::{MillerLoopOutput, Pairing},
-	CurveGroup,
-};
+use ark_ec::pairing::{MillerLoopOutput, Pairing};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
 
@@ -75,15 +72,15 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use ark_bls12_381::{G1Projective, G2Projective};
+	// use ark_bls12_381::{G1Projective, G2Projective};
 	use ark_ec::AffineRepr;
-	use ark_ff::Field;
+	// use ark_ff::Field;
 	use sp_std::vec;
 
-	/// Just to make shure that everything behaves as expected with all the (de-)serialization happening.
+	/// Just to make shure that everything behaves as expected with all the (de-)serialization
+	/// happening.
 	#[test]
 	fn multi_pairing_works() {
-
 		let [a, b] = [G1Affine::generator(), G1Affine::generator()];
 		let [c, d] = [G2Affine::generator(), G2Affine::generator()];
 
@@ -102,7 +99,8 @@ mod tests {
 			&result_1[..],
 			ark_serialize::Compress::Yes,
 			ark_serialize::Validate::Yes,
-		).unwrap();
+		)
+		.unwrap();
 		let result_2 = Bls12_381::multi_pairing([a, b], [c, d]);
 		assert_eq!(result_1, result_2.0);
 	}
