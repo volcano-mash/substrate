@@ -26,8 +26,6 @@ ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = fa
 ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false }
 ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/", default-features = false }
 ark-sub-bls12-381 = { package = "ark-bls12-381", git = "https://github.com/volcano-mash/curves/", default-features = false, branch = "ark-substrate" }
-sp-arkworks = { version = "0.0.1", default-features = false, path = "../../../../primitives/arkworks" }
-sp-io = { version = "6.0.0", default-features = false, path = "../../../../primitives/io" }
 
 [dev-dependencies]
 sp-core = { version = "6.0.0", default-features = false, path = "../../../../primitives/core" }
