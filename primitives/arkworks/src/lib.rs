@@ -25,19 +25,21 @@ use ark_ec::pairing::{MillerLoopOutput, Pairing};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
 
+const F12_COMPRESSED_SIZE: usize = 576;
+
 /// Compute multi pairing through arkworks
 pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
 	let g1: Vec<_> = vec_a
 		.iter()
-		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::Yes).unwrap())
+		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::No).unwrap())
 		.collect();
 	let g2: Vec<_> = vec_b
 		.iter()
-		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::Yes).unwrap())
+		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::No).unwrap())
 		.collect();
 	let res = Bls12_381::multi_pairing(&g1, &g2);
 	// serialize the result
-	let mut res_bytes = [0u8; 576];
+	let mut res_bytes = [0u8; F12_COMPRESSED_SIZE];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
 	res_bytes.to_vec()
 }
@@ -46,25 +48,25 @@ pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
 pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 	let g1: Vec<_> = a_vec
 		.iter()
-		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::Yes).unwrap())
+		.map(|a| G1Affine::deserialize_with_mode(&a[..], Compress::Yes, Validate::No).unwrap())
 		.collect();
 	let g2: Vec<_> = b_vec
 		.iter()
-		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::Yes).unwrap())
+		.map(|b| G2Affine::deserialize_with_mode(&b[..], Compress::Yes, Validate::No).unwrap())
 		.collect();
 	let res = Bls12_381::multi_miller_loop(&g1, &g2);
 	// serialize the result
-	let mut res_bytes = [0u8; 576];
+	let mut res_bytes = [0u8; F12_COMPRESSED_SIZE];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
 	res_bytes.to_vec()
 }
 
 /// Compute final exponentiation through arkworks
 pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
-	let f12 = Fq12::deserialize_with_mode(f12, Compress::Yes, Validate::Yes).unwrap();
+	let f12 = Fq12::deserialize_with_mode(f12, Compress::No, Validate::No).unwrap();
 	let res = Bls12_381::final_exponentiation(MillerLoopOutput(f12)).unwrap();
 	// serialize the result
-	let mut res_bytes = [0u8; 576];
+	let mut res_bytes = [0u8; F12_COMPRESSED_SIZE];
 	res.0.serialize_compressed(&mut res_bytes[..]).unwrap();
 	res_bytes.to_vec()
 }
@@ -75,7 +77,7 @@ mod tests {
 	use ark_ec::AffineRepr;
 	use sp_std::vec;
 
-	/// Just to make shure that everything behaves as expected with all the (de-)serialization
+	/// Just to make sure that everything behaves as expected with all the (de-)serialization
 	/// happening.
 	#[test]
 	fn multi_pairing_works() {

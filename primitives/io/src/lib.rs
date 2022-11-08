@@ -1078,17 +1078,17 @@ pub trait Crypto {
 	}
 
 	/// Compute a multi pairing
-	fn multi_pairing(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
+	fn bls12_381_multi_pairing(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
 		sp_arkworks::multi_pairing(a, b)
 	}
 
-	/// Compute a multi miler loop
-	fn multi_miller_loop(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
+	/// Compute a multi Miller loop
+	fn bls12_381_multi_miller_loop(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
 		sp_arkworks::multi_miller_loop(a, b)
 	}
 
-	/// Compute a multi miler loop
-	fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
+	/// Compute a final exponentiation
+	fn bls12_381_final_exponentiation(f12: &[u8]) -> Vec<u8> {
 		sp_arkworks::final_exponentiation(f12)
 	}
 }
