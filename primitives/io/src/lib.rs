@@ -1077,9 +1077,19 @@ pub trait Crypto {
 		Ok(pubkey.serialize())
 	}
 
-	/// Compute a pairing
-	fn pairing(a: &[u8], b: &[u8]) -> Vec<u8> {
-		sp_arkworks::pairing(a, b)
+	/// Compute a multi pairing
+	fn bls12_381_multi_pairing(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::multi_pairing(a, b)
+	}
+
+	/// Compute a multi Miller loop
+	fn bls12_381_multi_miller_loop(a: Vec<Vec<u8>>, b: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::multi_miller_loop(a, b)
+	}
+
+	/// Compute a final exponentiation
+	fn bls12_381_final_exponentiation(f12: &[u8]) -> Vec<u8> {
+		sp_arkworks::final_exponentiation(f12)
 	}
 }
 

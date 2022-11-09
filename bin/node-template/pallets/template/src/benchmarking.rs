@@ -8,9 +8,6 @@ use frame_benchmarking::{benchmarks, whitelisted_caller};
 use frame_system::RawOrigin;
 
 benchmarks! {
-	pairing_host {
-		let caller: T::AccountId = whitelisted_caller();
-	}: _(RawOrigin::Signed(caller), 0)
 	pairing_arkworks {
 		let caller: T::AccountId = whitelisted_caller();
 	}: _(RawOrigin::Signed(caller), 0)
