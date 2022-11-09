@@ -124,7 +124,7 @@ checksum = "29d47fbf90d5149a107494b15a7dc8d69b351be2db3bb9691740e88ec17fd880"
 [[package]]
 name = "ark-bls12-381"
 version = "0.3.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -316,22 +316,22 @@ version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e14485364214912d3b19cc3435dde4df66065127f05fa0d75c712f36f12c2f28"
 dependencies = [
- "concurrent-queue",
+ "concurrent-queue 1.2.4",
  "event-listener",
  "futures-core",
 ]
 
 [[package]]
 name = "async-executor"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "871f9bb5e0a22eeb7e8cf16641feb87c9dc67032ccf8ff49e772eb9941d3a965"
+checksum = "17adb73da160dfb475c183343c8cccd80721ea5a605d3eb57125f0a7b7a92d0b"
 dependencies = [
+ "async-lock",
  "async-task",
- "concurrent-queue",
+ "concurrent-queue 2.0.0",
  "fastrand",
  "futures-lite",
- "once_cell",
  "slab",
 ]
 
@@ -358,7 +358,7 @@ checksum = "e8121296a9f05be7f34aa4196b1747243b3b62e048bb7906f644f3fbfc490cf7"
 dependencies = [
  "async-lock",
  "autocfg",
- "concurrent-queue",
+ "concurrent-queue 1.2.4",
  "futures-lite",
  "libc",
  "log",
@@ -966,9 +966,9 @@ checksum = "37b2a672a2cb129a2e41c10b1224bb368f9f37a2b16b612598138befd7b37eb5"
 
 [[package]]
 name = "cc"
-version = "1.0.75"
+version = "1.0.76"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41ca34107f97baef6cfb231b32f36115781856b8f8208e8c580e0bcaea374842"
+checksum = "76a284da2e6fe2092f2353e51713435363112dfd60030e22add80be333fb928f"
 dependencies = [
  "jobserver",
 ]
@@ -1190,6 +1190,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af4780a44ab5696ea9e28294517f1fffb421a83a25af521333c838635509db9c"
 dependencies = [
  "cache-padded",
+]
+
+[[package]]
+name = "concurrent-queue"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd7bef69dc86e3c610e4e7aed41035e2a7ed12e72dd7530f61327a6579a4390b"
+dependencies = [
+ "crossbeam-utils",
 ]
 
 [[package]]
@@ -3720,9 +3729,9 @@ dependencies = [
 
 [[package]]
 name = "libm"
-version = "0.2.5"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "292a948cd991e376cf75541fe5b97a1081d713c618b4f1b9500f8844e49eb565"
+checksum = "348108ab3fba42ec82ff6e9564fc4ca0247bdccdc68dd8af9764bbc79c3c8ffb"
 
 [[package]]
 name = "libp2p"
@@ -4334,9 +4343,9 @@ dependencies = [
 
 [[package]]
 name = "memmap2"
-version = "0.5.7"
+version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95af15f345b17af2efc8ead6080fb8bc376f8cec1b35277b935637595fe77498"
+checksum = "4b182332558b18d807c4ce1ca8ca983b34c3ee32765e47b3f0f69b90355cc1dc"
 dependencies = [
  "libc",
 ]
@@ -6377,7 +6386,6 @@ name = "pallet-template"
 version = "4.0.0-dev"
 dependencies = [
  "ark-bls12-381 0.3.0 (git+https://github.com/volcano-mash/curves/?branch=ark-substrate)",
- "ark-bls12-381 0.3.0 (git+https://github.com/arkworks-rs/curves/)",
  "ark-ec",
  "ark-ff",
  "ark-serialize",
@@ -9623,7 +9631,7 @@ dependencies = [
 [[package]]
 name = "sp-arkworks"
 version = "0.0.1"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "ark-bls12-381 0.3.0 (git+https://github.com/arkworks-rs/curves/)",
  "ark-ec",
@@ -9830,7 +9838,7 @@ dependencies = [
 [[package]]
 name = "sp-core"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "array-bytes",
  "base58",
@@ -9889,7 +9897,7 @@ dependencies = [
 [[package]]
 name = "sp-core-hashing"
 version = "4.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "blake2",
  "byteorder",
@@ -9930,7 +9938,7 @@ dependencies = [
 [[package]]
 name = "sp-debug-derive"
 version = "4.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -9950,7 +9958,7 @@ dependencies = [
 [[package]]
 name = "sp-externalities"
 version = "0.12.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "environmental",
  "parity-scale-codec",
@@ -10018,7 +10026,7 @@ dependencies = [
 [[package]]
 name = "sp-io"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "bytes",
  "futures",
@@ -10073,7 +10081,7 @@ dependencies = [
 [[package]]
 name = "sp-keystore"
 version = "0.12.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "async-trait",
  "futures",
@@ -10159,7 +10167,7 @@ dependencies = [
 [[package]]
 name = "sp-panic-handler"
 version = "4.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "backtrace",
  "lazy_static",
@@ -10230,7 +10238,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "bytes",
  "impl-trait-for-tuples",
@@ -10259,7 +10267,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface-proc-macro"
 version = "5.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "Inflector",
  "proc-macro-crate",
@@ -10382,7 +10390,7 @@ dependencies = [
 [[package]]
 name = "sp-state-machine"
 version = "0.12.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "hash-db",
  "log",
@@ -10408,7 +10416,7 @@ version = "4.0.0"
 [[package]]
 name = "sp-std"
 version = "4.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 
 [[package]]
 name = "sp-storage"
@@ -10425,7 +10433,7 @@ dependencies = [
 [[package]]
 name = "sp-storage"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
@@ -10489,7 +10497,7 @@ dependencies = [
 [[package]]
 name = "sp-tracing"
 version = "5.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "parity-scale-codec",
  "sp-std 4.0.0 (git+https://github.com/volcano-mash/curves/?branch=ark-substrate)",
@@ -10551,7 +10559,7 @@ dependencies = [
 [[package]]
 name = "sp-trie"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "ahash",
  "hash-db",
@@ -10613,7 +10621,7 @@ dependencies = [
 [[package]]
 name = "sp-wasm-interface"
 version = "6.0.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "impl-trait-for-tuples",
  "log",
@@ -10655,9 +10663,9 @@ dependencies = [
 
 [[package]]
 name = "ss58-registry"
-version = "1.33.0"
+version = "1.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ab7554f8a8b6f8d71cd5a8e6536ef116e2ce0504cf97ebf16311d58065dc8a6"
+checksum = "37a9821878e1f13aba383aa40a86fb1b33c7265774ec91e32563cb1dd1577496"
 dependencies = [
  "Inflector",
  "num-format",
@@ -10752,7 +10760,7 @@ dependencies = [
 [[package]]
 name = "sub-bls12-model"
 version = "0.3.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#199d07723b4fbfbc1b95bb908618e06c3a5c2fde"
+source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d307c25ed34daf45497cd9d9bd2b0a4ff8556096"
 dependencies = [
  "ark-ec",
  "ark-ff",

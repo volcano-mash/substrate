@@ -73,7 +73,7 @@ pub mod pallet {
 		pub fn pairing_arkworks(origin: OriginFor<T>, something: u32) -> DispatchResult {
 			//for a fair benchmark, this would probably need some deserialization from the
 			// arguments
-			let out = Bls12_381::pairing(&G1Affine::generator(), &G2Affine::generator());
+			let out = Bls12_381::multi_pairing(&[G1Affine::generator()], &[G2Affine::generator()]);
 
 			Ok(())
 		}
