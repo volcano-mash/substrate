@@ -110,7 +110,7 @@ impl<P: Bls12Parameters> Pairing for Bls12<P> {
             .collect();
 
         let res = bls12_381_multi_miller_loop(a_vec, b_vec);
-        let mut cursor = Cursor::new(&res[..]);
+        let cursor = Cursor::new(&res[..]);
         let f: Self::TargetField =
             Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
                 .unwrap();
@@ -126,7 +126,7 @@ impl<P: Bls12Parameters> Pairing for Bls12<P> {
 
         let res = sp_io::crypto::bls12_381_final_exponentiation(&out[..]);
 
-        let mut cursor = Cursor::new(&res[..]);
+        let cursor = Cursor::new(&res[..]);
         let r: Self::TargetField =
             Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
                 .unwrap();

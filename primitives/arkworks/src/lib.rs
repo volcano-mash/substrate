@@ -35,7 +35,7 @@ pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
 	let g1: Vec<_> = vec_a
 		.iter()
 		.map(|a| {
-			let mut cursor = Cursor::new(&a[..]);
+			let cursor = Cursor::new(&a[..]);
 			<Bls12_381 as Pairing>::G1Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
@@ -47,7 +47,7 @@ pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
 	let g2: Vec<_> = vec_b
 		.iter()
 		.map(|b| {
-			let mut cursor = Cursor::new(&b[..]);
+			let cursor = Cursor::new(&b[..]);
 			<Bls12_381 as Pairing>::G2Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
@@ -69,7 +69,7 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 	let g1: Vec<_> = a_vec
 		.iter()
 		.map(|a| {
-			let mut cursor = Cursor::new(&a[..]);
+			let cursor = Cursor::new(&a[..]);
 			<Bls12_381 as Pairing>::G1Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
@@ -81,7 +81,7 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 	let g2: Vec<_> = b_vec
 		.iter()
 		.map(|b| {
-			let mut cursor = Cursor::new(&b[..]);
+			let cursor = Cursor::new(&b[..]);
 			<Bls12_381 as Pairing>::G2Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
@@ -100,7 +100,7 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 
 /// Compute final exponentiation through arkworks
 pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
-	let mut cursor = Cursor::new(&f12[..]);
+	let cursor = Cursor::new(&f12[..]);
 	let f12 = Fq12::deserialize_with_mode(cursor, Compress::Yes, Validate::No).unwrap();
 	let res = Bls12_381::final_exponentiation(MillerLoopOutput(f12)).unwrap();
 	// serialize the result
