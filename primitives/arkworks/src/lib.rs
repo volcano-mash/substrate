@@ -73,7 +73,7 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 			<Bls12_381 as Pairing>::G1Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
-				Validate::Yes,
+				Validate::No,
 			)
 			.unwrap()
 		})
@@ -85,7 +85,7 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 			<Bls12_381 as Pairing>::G2Prepared::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
-				Validate::Yes,
+				Validate::No,
 			)
 			.unwrap()
 		})
@@ -137,7 +137,7 @@ mod tests {
 		let result_1 = Fq12::deserialize_with_mode(
 			&result_1[..],
 			ark_serialize::Compress::Yes,
-			ark_serialize::Validate::Yes,
+			ark_serialize::Validate::No,
 		)
 		.unwrap();
 		let result_2 = Bls12_381::multi_pairing([a, b], [c, d]);
