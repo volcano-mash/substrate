@@ -20,6 +20,7 @@ ark-std = { git = "https://github.com/arkworks-rs/std", default-features = false
 ark-bls12-381 = { git = "https://github.com/arkworks-rs/curves/" }
 sp-std = { version = "4.0.0", default-features = false, path = "../std" }
 
+
 [features]
 default = ["std"]
 std = [

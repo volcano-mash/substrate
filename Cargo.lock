@@ -122,14 +122,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29d47fbf90d5149a107494b15a7dc8d69b351be2db3bb9691740e88ec17fd880"
 
 [[package]]
-name = "ark-bls12-381"
+name = "ark-algebra-test-templates"
 version = "0.3.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d2b40ff230c86e0fafcd6ad7412a25a3d00dfe0b"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3eef0b339ebc113d9bd3fb7cd666baf2cfe4e1024e0fac23e072d46598bbd0cd"
 dependencies = [
  "ark-ec",
  "ark-ff",
  "ark-serialize",
  "ark-std",
+]
+
+[[package]]
+name = "ark-bls12-381"
+version = "0.3.0"
+dependencies = [
+ "ark-algebra-test-templates",
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "hex",
  "sub-bls12-model",
 ]
 
@@ -239,6 +252,7 @@ source = "git+https://github.com/arkworks-rs/std#7019830e89b69aca059ce7848e53bd9
 dependencies = [
  "num-traits",
  "rand 0.8.5",
+ "rayon",
 ]
 
 [[package]]
@@ -6385,7 +6399,7 @@ dependencies = [
 name = "pallet-template"
 version = "4.0.0-dev"
 dependencies = [
- "ark-bls12-381 0.3.0 (git+https://github.com/volcano-mash/curves/?branch=ark-substrate)",
+ "ark-bls12-381 0.3.0",
  "ark-ec",
  "ark-ff",
  "ark-serialize",
@@ -6396,6 +6410,7 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-core",
+ "sp-io",
  "sp-runtime",
 ]
 
@@ -10496,7 +10511,6 @@ dependencies = [
 [[package]]
 name = "sub-bls12-model"
 version = "0.3.0"
-source = "git+https://github.com/volcano-mash/curves/?branch=ark-substrate#d2b40ff230c86e0fafcd6ad7412a25a3d00dfe0b"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -10506,6 +10520,7 @@ dependencies = [
  "getrandom 0.2.8",
  "itertools",
  "num-traits",
+ "rayon",
  "sp-io",
  "zeroize",
 ]
