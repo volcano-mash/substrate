@@ -8,11 +8,11 @@ pub type Fq12 = Fp12<Fq12Config>;
 pub struct Fq12Config;
 
 impl Fp12Config for Fq12Config {
-    type Fp6Config = Fq6Config;
+	type Fp6Config = Fq6Config;
 
-    const NONRESIDUE: Fq6 = Fq6::new(Fq2::ZERO, Fq2::ONE, Fq2::ZERO);
+	const NONRESIDUE: Fq6 = Fq6::new(Fq2::ZERO, Fq2::ONE, Fq2::ZERO);
 
-    const FROBENIUS_COEFF_FP12_C1: &'static [Fq2] = &[
+	const FROBENIUS_COEFF_FP12_C1: &'static [Fq2] = &[
         // Fp2::NONRESIDUE^(((q^0) - 1) / 6)
         Fq2::new(
             Fq::ONE,

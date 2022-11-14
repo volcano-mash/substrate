@@ -991,7 +991,6 @@ pub trait Crypto {
 		sig: &[u8; 65],
 		msg: &[u8; 32],
 	) -> Result<[u8; 64], EcdsaVerifyError> {
-
 		let rid = libsecp256k1::RecoveryId::parse(
 			if sig[64] > 26 { sig[64] - 27 } else { sig[64] } as u8,
 		)

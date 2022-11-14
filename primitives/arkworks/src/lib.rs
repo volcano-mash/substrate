@@ -22,7 +22,7 @@
 
 use ark_bls12_381::{Bls12_381, Fq12};
 use ark_ec::{
-	pairing::{MillerLoopOutput, Pairing},
+	pairing::{MillerLoopOutput, Pairing}, bls12::G1Prepared,
 };
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
@@ -70,24 +70,24 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 		.iter()
 		.map(|a| {
 			let cursor = Cursor::new(&a[..]);
-			<Bls12_381 as Pairing>::G1Prepared::deserialize_with_mode(
+			<Bls12_381 as Pairing>::G1Affine::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
 				Validate::No,
 			)
-			.unwrap()
+			.map(<Bls12_381 as Pairing>::G1Prepared::from).unwrap()
 		})
 		.collect();
 	let g2: Vec<_> = b_vec
 		.iter()
 		.map(|b| {
 			let cursor = Cursor::new(&b[..]);
-			<Bls12_381 as Pairing>::G2Prepared::deserialize_with_mode(
+			<Bls12_381 as Pairing>::G2Affine::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
 				Validate::No,
 			)
-			.unwrap()
+			.map(<Bls12_381 as Pairing>::G2Prepared::from).unwrap()
 		})
 		.collect();
 	let res = Bls12_381::multi_miller_loop(g1, g2);

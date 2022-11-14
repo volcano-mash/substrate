@@ -10,8 +10,8 @@ pub(crate) mod util;
 mod tests;
 
 pub use self::{
-    g1::{G1Affine, G1Projective},
-    g2::{G2Affine, G2Projective},
+	g1::{G1Affine, G1Projective},
+	g2::{G2Affine, G2Projective},
 };
 
 pub type Bls12_381 = Bls12<Parameters>;
@@ -19,13 +19,13 @@ pub type Bls12_381 = Bls12<Parameters>;
 pub struct Parameters;
 
 impl Bls12Parameters for Parameters {
-    const X: &'static [u64] = &[0xd201000000010000];
-    const X_IS_NEGATIVE: bool = true;
-    const TWIST_TYPE: TwistType = TwistType::M;
-    type Fp = Fq;
-    type Fp2Config = Fq2Config;
-    type Fp6Config = Fq6Config;
-    type Fp12Config = Fq12Config;
-    type G1Parameters = self::g1::Parameters;
-    type G2Parameters = self::g2::Parameters;
+	const X: &'static [u64] = &[0xd201000000010000];
+	const X_IS_NEGATIVE: bool = true;
+	const TWIST_TYPE: TwistType = TwistType::M;
+	type Fp = Fq;
+	type Fp2Config = Fq2Config;
+	type Fp6Config = Fq6Config;
+	type Fp12Config = Fq12Config;
+	type G1Parameters = self::g1::Parameters;
+	type G2Parameters = self::g2::Parameters;
 }

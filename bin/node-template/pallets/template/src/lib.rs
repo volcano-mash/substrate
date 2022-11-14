@@ -16,10 +16,7 @@ mod benchmarking;
 #[frame_support::pallet]
 pub mod pallet {
 	use ark_bls12_381::{Bls12_381, G1Affine, G2Affine};
-	use ark_ec::{
-		pairing::{*},
-		AffineRepr,
-	};
+	use ark_ec::{pairing::*, AffineRepr};
 	use ark_std::vec;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
