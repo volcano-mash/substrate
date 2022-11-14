@@ -17,11 +17,9 @@ mod benchmarking;
 pub mod pallet {
 	use ark_bls12_381::{Bls12_381, G1Affine, G2Affine};
 	use ark_ec::{
-		pairing::{self, *},
-		AffineRepr, CurveGroup, Group,
+		pairing::{*},
+		AffineRepr,
 	};
-	use ark_ff::{Field, PrimeField};
-	use ark_serialize::{CanonicalSerialize, Compress};
 	use ark_std::vec;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
@@ -70,10 +68,10 @@ pub mod pallet {
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
-		pub fn pairing_arkworks(origin: OriginFor<T>, something: u32) -> DispatchResult {
+		pub fn pairing_arkworks(_origin: OriginFor<T>, _something: u32) -> DispatchResult {
 			//for a fair benchmark, this would probably need some deserialization from the
 			// arguments
-			let out = Bls12_381::multi_pairing(&[G1Affine::generator()], &[G2Affine::generator()]);
+			let _out = Bls12_381::multi_pairing(&[G1Affine::generator()], &[G2Affine::generator()]);
 
 			Ok(())
 		}

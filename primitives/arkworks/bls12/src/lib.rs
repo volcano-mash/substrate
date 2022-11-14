@@ -3,7 +3,6 @@
 use ark_ec::{
     models::{short_weierstrass::SWCurveConfig, CurveConfig},
     pairing::{MillerLoopOutput, Pairing, PairingOutput},
-    AffineRepr,
 };
 use ark_ff::{
     fields::{
@@ -12,13 +11,11 @@ use ark_ff::{
         fp6_3over2::Fp6Config,
         Fp2,
     },
-    BitIteratorBE, CyclotomicMultSubgroup, Field, PrimeField,
+    PrimeField,
 };
-use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Write};
-use ark_std::{io::Cursor, cfg_chunks_mut, marker::PhantomData, vec, vec::Vec};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
+use ark_std::{io::Cursor, marker::PhantomData, vec, vec::Vec};
 use derivative::Derivative;
-use itertools::Itertools;
-use num_traits::{One, Zero};
 use sp_io::crypto::bls12_381_multi_miller_loop;
 
 #[cfg(feature = "parallel")]
