@@ -22,7 +22,7 @@
 
 use ark_bls12_381::{Bls12_381, Fq12};
 use ark_ec::{
-	pairing::{MillerLoopOutput, Pairing}, bls12::G1Prepared,
+	pairing::{MillerLoopOutput, Pairing},
 };
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use sp_std::vec::Vec;
@@ -48,7 +48,7 @@ pub fn multi_pairing(vec_a: Vec<Vec<u8>>, vec_b: Vec<Vec<u8>>) -> Vec<u8> {
 		.iter()
 		.map(|b| {
 			let cursor = Cursor::new(&b[..]);
-			<Bls12_381 as Pairing>::G2Prepared::deserialize_with_mode(
+			<Bls12_381 as Pairing>::G2Affine::deserialize_with_mode(
 				cursor,
 				Compress::Yes,
 				Validate::No,
