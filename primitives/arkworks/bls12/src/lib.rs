@@ -54,6 +54,7 @@ pub use self::{
 	g1::{G1Affine, G1Prepared, G1Projective},
 	g2::{G2Affine, G2Prepared, G2Projective},
 };
+use core::any::{Any, TypeId};
 
 #[derive(Derivative)]
 #[derivative(Copy, Clone, PartialEq, Eq, Debug, Hash)]
