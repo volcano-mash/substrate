@@ -6,5 +6,3 @@ pub type Bls12_381 = Bls12<Parameters>;
 
 #[cfg(test)]
 mod tests;
-
-
