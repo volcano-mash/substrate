@@ -73,7 +73,8 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 				Compress::Yes,
 				Validate::No,
 			)
-			.map(<Bls12_381 as Pairing>::G1Prepared::from).unwrap()
+			.map(<Bls12_381 as Pairing>::G1Prepared::from)
+			.unwrap()
 		})
 		.collect();
 	let g2: Vec<_> = b_vec
@@ -85,7 +86,8 @@ pub fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
 				Compress::Yes,
 				Validate::No,
 			)
-			.map(<Bls12_381 as Pairing>::G2Prepared::from).unwrap()
+			.map(<Bls12_381 as Pairing>::G2Prepared::from)
+			.unwrap()
 		})
 		.collect();
 	let res = Bls12_381::multi_miller_loop(g1, g2);
