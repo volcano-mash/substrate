@@ -31,7 +31,3 @@ std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "bls12/std" ]
 curve = [ "scalar_field" ]
 scalar_field = []
 
-[[bench]]
-name = "bls12_381"
-path = "benches/bls12_381.rs"
-harness = false
