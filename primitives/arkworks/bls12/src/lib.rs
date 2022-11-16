@@ -1,18 +1,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_ec::{
-	models::{short_weierstrass::SWCurveConfig, CurveConfig},
+	models::CurveConfig,
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
-use ark_ff::{
-	fields::{
-		fp12_2over3over2::{Fp12, Fp12Config},
-		fp2::Fp2Config,
-		fp6_3over2::Fp6Config,
-		Fp2,
-	},
-	PrimeField,
-};
+use ark_ff::fields::fp12_2over3over2::Fp12;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
 use ark_std::{io::Cursor, marker::PhantomData, vec, vec::Vec};
 use derivative::Derivative;
