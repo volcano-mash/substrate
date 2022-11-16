@@ -1,7 +1,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_ec::{
-	models::{short_weierstrass::SWCurveConfig, CurveConfig},
+	models::{
+		short_weierstrass::SWCurveConfig,
+		CurveConfig,
+	},
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
 use ark_ff::{
@@ -23,35 +26,36 @@ use rayon::prelude::*;
 
 /// A particular BLS12 group can have G2 being either a multiplicative or a
 /// divisive twist.
-pub enum TwistType {
-	M,
-	D,
-}
+// pub enum TwistType {
+//     M,
+//     D,
+// }
 
-pub trait Bls12Parameters: 'static {
-	/// Parameterizes the BLS12 family.
-	const X: &'static [u64];
-	/// Is `Self::X` negative?
-	const X_IS_NEGATIVE: bool;
-	/// What kind of twist is this?
-	const TWIST_TYPE: TwistType;
+// pub trait Bls12Parameters: 'static {
+//     /// Parameterizes the BLS12 family.
+//     const X: &'static [u64];
+//     /// Is `Self::X` negative?
+//     const X_IS_NEGATIVE: bool;
+//     /// What kind of twist is this?
+//     const TWIST_TYPE: TwistType;
 
-	type Fp: PrimeField + Into<<Self::Fp as PrimeField>::BigInt>;
-	type Fp2Config: Fp2Config<Fp = Self::Fp>;
-	type Fp6Config: Fp6Config<Fp2Config = Self::Fp2Config>;
-	type Fp12Config: Fp12Config<Fp6Config = Self::Fp6Config>;
-	type G1Parameters: SWCurveConfig<BaseField = Self::Fp>;
-	type G2Parameters: SWCurveConfig<
-		BaseField = Fp2<Self::Fp2Config>,
-		ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
-	>;
-}
+//     type Fp: PrimeField + Into<<Self::Fp as PrimeField>::BigInt>;
+//     type Fp2Config: Fp2Config<Fp = Self::Fp>;
+//     type Fp6Config: Fp6Config<Fp2Config = Self::Fp2Config>;
+//     type Fp12Config: Fp12Config<Fp6Config = Self::Fp6Config>;
+//     type G1Parameters: SWCurveConfig<BaseField = Self::Fp>;
+//     type G2Parameters: SWCurveConfig<
+//         BaseField = Fp2<Self::Fp2Config>,
+//         ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
+//     >;
+// }
 
-pub mod g1;
+pub use ark_ec::models::bls12::{Bls12Parameters, TwistType, g1::{G1Affine, G1Prepared, G1Projective}};
+// pub mod g1;
 pub mod g2;
 
 pub use self::{
-	g1::{G1Affine, G1Prepared, G1Projective},
+	// g1::{G1Affine, G1Prepared, G1Projective},
 	g2::{G2Affine, G2Prepared, G2Projective},
 };
 
@@ -81,14 +85,6 @@ impl<P: Bls12Parameters> Pairing for Bls12<P> {
 				let mut serialized = vec![0; elem.serialized_size(Compress::Yes)];
 				let mut cursor = Cursor::new(&mut serialized[..]);
 				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
-				let mut cursor = Cursor::new(&serialized[..]);
-				let check: Self::G1Prepared = G1Prepared::deserialize_with_mode(
-					&mut cursor,
-					Compress::Yes,
-					ark_serialize::Validate::No,
-				)
-				.unwrap();
-				assert_eq!(elem, check);
 				serialized
 			})
 			.collect();

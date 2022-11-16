@@ -21,12 +21,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ark_bls12_381::{Bls12_381, Fq12};
-use ark_ec::{
-	pairing::{MillerLoopOutput, Pairing},
-};
+use ark_ec::pairing::{MillerLoopOutput, Pairing};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
-use sp_std::vec::Vec;
 use ark_std::io::Cursor;
+use sp_std::vec::Vec;
 
 const F12_COMPRESSED_SIZE: usize = 576;
 

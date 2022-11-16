@@ -138,6 +138,7 @@ name = "ark-bls12-381"
 version = "0.3.0"
 dependencies = [
  "ark-algebra-test-templates",
+ "ark-bls12-381 0.3.0 (git+https://github.com/arkworks-rs/curves/)",
  "ark-ec",
  "ark-ff",
  "ark-serialize",
