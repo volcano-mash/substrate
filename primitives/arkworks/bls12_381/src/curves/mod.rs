@@ -2,7 +2,7 @@ use bls12::{Bls12, HostFunctions};
 
 pub use ark_bls12_381::{g1::*, g2::*, Parameters};
 use sp_io::crypto::{bls12_381_multi_miller_loop, bls12_381_final_exponentiation};
-use ark_std::{vec, vec::Vec};
+use ark_std::vec::Vec;
 
 pub struct Host;
 

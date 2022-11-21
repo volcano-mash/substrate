@@ -10523,7 +10523,6 @@ dependencies = [
  "itertools",
  "num-traits",
  "rayon",
- "sp-io",
  "zeroize",
 ]
 

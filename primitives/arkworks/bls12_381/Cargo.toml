@@ -27,7 +27,7 @@ hex = "^0.4.0"
 
 [features]
 default = [ "curve" ]
-std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "bls12/std" ]
+std = [ "ark-std/std", "ark-ff/std", "ark-ec/std", "bls12/std", "sp-io/std" ]
 
 curve = [ "scalar_field" ]
 scalar_field = []
