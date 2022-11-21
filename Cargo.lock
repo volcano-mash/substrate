@@ -144,6 +144,7 @@ dependencies = [
  "ark-serialize",
  "ark-std",
  "hex",
+ "sp-io",
  "sub-bls12-model",
 ]
 
