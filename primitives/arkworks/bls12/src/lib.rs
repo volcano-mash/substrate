@@ -25,6 +25,11 @@ pub use self::g2::{G2Affine, G2Prepared, G2Projective};
 #[derivative(Copy, Clone, PartialEq, Eq, Debug, Hash)]
 pub struct Bls12<P: Bls12Parameters>(PhantomData<fn() -> P>);
 
+pub trait HostFunctions {
+	fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8>;
+    fn final_exponentiation(f12: &[u8]) -> Vec<u8> ;
+}
+
 impl<P: Bls12Parameters> Pairing for Bls12<P> {
 	type BaseField = <P::G1Parameters as CurveConfig>::BaseField;
 	type ScalarField = <P::G1Parameters as CurveConfig>::ScalarField;
