@@ -631,9 +631,9 @@ impl<P: SWCurveConfig> ScalarMul for Projective<P> {
 
 impl<P: SWCurveConfig> VariableBaseMSM for Projective<P> {
 	fn msm_bigint(
-        bases: &[Self::MulBase],
-        bigints: &[<Self::ScalarField as PrimeField>::BigInt],
-    ) -> Self {
+		bases: &[Self::MulBase],
+		bigints: &[<Self::ScalarField as PrimeField>::BigInt],
+	) -> Self {
 		P::msm_bigint(bases, bigints)
 	}
 }

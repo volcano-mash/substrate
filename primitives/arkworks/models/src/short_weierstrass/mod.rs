@@ -182,7 +182,7 @@ pub trait SWCurveConfig: ark_ec::CurveConfig {
 	}
 
 	fn msm_bigint(
-        bases: &[Affine<Self>],
-        bigints: &[<Self::ScalarField as PrimeField>::BigInt],
-    ) -> Projective<Self>; 
+		bases: &[Affine<Self>],
+		bigints: &[<Self::ScalarField as PrimeField>::BigInt],
+	) -> Projective<Self>;
 }

@@ -3,13 +3,13 @@ use ark_ec::{
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
 use ark_ff::{
-    fields::{
-        fp12_2over3over2::{Fp12, Fp12Config},
-        fp2::Fp2Config,
-        fp6_3over2::Fp6Config,
-        Fp2,
-    },
-    PrimeField,
+	fields::{
+		fp12_2over3over2::{Fp12, Fp12Config},
+		fp2::Fp2Config,
+		fp6_3over2::Fp6Config,
+		Fp2,
+	},
+	PrimeField,
 };
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
 use ark_std::{io::Cursor, marker::PhantomData, vec, vec::Vec};
@@ -23,34 +23,36 @@ use rayon::prelude::*;
 /// A particular BLS12 group can have G2 being either a multiplicative or a
 /// divisive twist.
 pub enum TwistType {
-    M,
-    D,
+	M,
+	D,
 }
 
 pub trait Bls12Parameters: 'static {
-    /// Parameterizes the BLS12 family.
-    const X: &'static [u64];
-    /// Is `Self::X` negative?
-    const X_IS_NEGATIVE: bool;
-    /// What kind of twist is this?
-    const TWIST_TYPE: TwistType;
+	/// Parameterizes the BLS12 family.
+	const X: &'static [u64];
+	/// Is `Self::X` negative?
+	const X_IS_NEGATIVE: bool;
+	/// What kind of twist is this?
+	const TWIST_TYPE: TwistType;
 
-    type Fp: PrimeField + Into<<Self::Fp as PrimeField>::BigInt>;
-    type Fp2Config: Fp2Config<Fp = Self::Fp>;
-    type Fp6Config: Fp6Config<Fp2Config = Self::Fp2Config>;
-    type Fp12Config: Fp12Config<Fp6Config = Self::Fp6Config>;
-    type G1Parameters: SWCurveConfig<BaseField = Self::Fp>;
-    type G2Parameters: SWCurveConfig<
-        BaseField = Fp2<Self::Fp2Config>,
-        ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
-    >;
+	type Fp: PrimeField + Into<<Self::Fp as PrimeField>::BigInt>;
+	type Fp2Config: Fp2Config<Fp = Self::Fp>;
+	type Fp6Config: Fp6Config<Fp2Config = Self::Fp2Config>;
+	type Fp12Config: Fp12Config<Fp6Config = Self::Fp6Config>;
+	type G1Parameters: SWCurveConfig<BaseField = Self::Fp>;
+	type G2Parameters: SWCurveConfig<
+		BaseField = Fp2<Self::Fp2Config>,
+		ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
+	>;
 }
 
 pub mod g1;
 pub mod g2;
 
-pub use self::g1::{G1Affine, G1Prepared, G1Projective};
-pub use self::g2::{G2Affine, G2Prepared, G2Projective};
+pub use self::{
+	g1::{G1Affine, G1Prepared, G1Projective},
+	g2::{G2Affine, G2Prepared, G2Projective},
+};
 
 pub trait HostFunctions: 'static {
 	fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8>;

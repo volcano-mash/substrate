@@ -1,7 +1,8 @@
-use crate::{bls12::Bls12Parameters, short_weierstrass::{Affine, Projective}};
-use ark_ec::{
-	AffineRepr, CurveGroup,
+use crate::{
+	bls12::Bls12Parameters,
+	short_weierstrass::{Affine, Projective},
 };
+use ark_ec::{AffineRepr, CurveGroup};
 use ark_serialize::*;
 use ark_std::vec::Vec;
 use derivative::Derivative;
