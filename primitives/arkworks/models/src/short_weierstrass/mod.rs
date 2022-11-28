@@ -4,7 +4,7 @@ use ark_serialize::{
 };
 use ark_std::io::{Read, Write};
 
-use ark_ff::fields::Field;
+use ark_ff::{fields::Field, PrimeField};
 
 use ark_ec::{AffineRepr, Group};
 
@@ -180,4 +180,9 @@ pub trait SWCurveConfig: ark_ec::CurveConfig {
 			Compress::No => zero.compressed_size() + zero.serialized_size_with_flags::<SWFlags>(),
 		}
 	}
+
+	fn msm_bigint(
+        bases: &[Affine<Self>],
+        bigints: &[<Self::ScalarField as PrimeField>::BigInt],
+    ) -> Projective<Self>; 
 }

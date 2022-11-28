@@ -5,7 +5,7 @@ use ark_ec::{
     AffineRepr, CurveGroup, Group,
 };
 use ark_sub_models::{bls12, bls12::Bls12Parameters,short_weierstrass::{Affine, Projective, SWCurveConfig}};
-use ark_ff::{Field, MontFp, Zero};
+use ark_ff::{Field, PrimeField, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 
 use super::util::{serialize_fq, EncodingFlags, G2_SERIALIZED_SIZE};
@@ -177,6 +177,8 @@ impl SWCurveConfig for Parameters {
             2 * G2_SERIALIZED_SIZE
         }
     }
+
+    fn msm_bigint(_: &[ark_sub_models::short_weierstrass::Affine<Self>], _: &[<<Self as CurveConfig>::ScalarField as PrimeField>::BigInt]) -> ark_sub_models::short_weierstrass::Projective<Self> { todo!() }
 }
 
 pub const G2_GENERATOR_X: Fq2 = Fq2::new(G2_GENERATOR_X_C0, G2_GENERATOR_X_C1);

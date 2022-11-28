@@ -134,6 +134,9 @@ impl SWCurveConfig for Parameters {
             G1_SERIALIZED_SIZE * 2
         }
     }
+
+    fn msm_bigint(_: &[ark_sub_models::short_weierstrass::Affine<Self>], _: &[<<Self as CurveConfig>::ScalarField as PrimeField>::BigInt]) -> ark_sub_models::short_weierstrass::Projective<Self> { todo!() }
+
 }
 
 fn one_minus_x() -> Fr {
