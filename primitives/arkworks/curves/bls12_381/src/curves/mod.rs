@@ -1,4 +1,4 @@
-use bls12::{Bls12, Bls12Parameters, TwistType, HostFunctions};
+use ark_sub_models::bls12::{Bls12, Bls12Parameters, TwistType, HostFunctions};
 
 use ark_std::vec::Vec;
 use sp_io::crypto::{bls12_381_final_exponentiation, bls12_381_multi_miller_loop};

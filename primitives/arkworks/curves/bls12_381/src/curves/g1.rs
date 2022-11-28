@@ -4,7 +4,7 @@ use ark_ec::{
     short_weierstrass::{Affine, SWCurveConfig},
     AffineRepr, Group,
 };
-use {bls12, bls12::Bls12Parameters};
+use ark_sub_models::{bls12, bls12::Bls12Parameters};
 use ark_ff::{Field, MontFp, PrimeField, Zero};
 use ark_serialize::{Compress, SerializationError};
 use ark_std::{ops::Neg, One};

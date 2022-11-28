@@ -1,5 +1,3 @@
-#![cfg_attr(not(feature = "std"), no_std)]
-
 use ark_ec::{
 	models::CurveConfig,
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
