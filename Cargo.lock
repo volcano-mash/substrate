@@ -148,6 +148,7 @@ dependencies = [
  "hex",
  "sp-io",
  "sub-bls12-model",
+ "sub-short-weierstrass-model",
 ]
 
 [[package]]
@@ -10514,6 +10515,23 @@ dependencies = [
 
 [[package]]
 name = "sub-bls12-model"
+version = "0.3.0"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+ "derivative",
+ "getrandom 0.2.8",
+ "itertools",
+ "num-traits",
+ "rayon",
+ "sub-short-weierstrass-model",
+ "zeroize",
+]
+
+[[package]]
+name = "sub-short-weierstrass-model"
 version = "0.3.0"
 dependencies = [
  "ark-ec",
