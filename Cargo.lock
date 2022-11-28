@@ -148,7 +148,6 @@ dependencies = [
  "hex",
  "sp-io",
  "sub-bls12-model",
- "sub-short-weierstrass-model",
 ]
 
 [[package]]
