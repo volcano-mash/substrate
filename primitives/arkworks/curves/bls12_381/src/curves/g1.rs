@@ -1,8 +1,8 @@
 use crate::*;
 use ark_ec::{models::CurveConfig, AffineRepr, Group};
 use ark_ff::{Field, MontFp, PrimeField, Zero};
-use ark_serialize::{Compress, SerializationError};
-use ark_std::{ops::Neg, One};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, SerializationError};
+use ark_std::{ops::Neg, One, io::Cursor, vec, vec::Vec};
 use ark_sub_models::{
 	bls12,
 	bls12::Bls12Parameters,
@@ -137,10 +137,29 @@ impl SWCurveConfig for Parameters {
 	}
 
 	fn msm_bigint(
-		_: &[ark_sub_models::short_weierstrass::Affine<Self>],
-		_: &[<<Self as CurveConfig>::ScalarField as PrimeField>::BigInt],
+		bases: &[ark_sub_models::short_weierstrass::Affine<Self>],
+	    bigint: &[<<Self as CurveConfig>::ScalarField as PrimeField>::BigInt],
 	) -> ark_sub_models::short_weierstrass::Projective<Self> {
-		todo!()
+		let bases: Vec<Vec<u8>> = bases
+			.into_iter()
+			.map(|elem| {
+				let mut serialized = vec![0; elem.serialized_size(Compress::Yes)];
+				let mut cursor = Cursor::new(&mut serialized[..]);
+				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+				serialized
+			})
+			.collect();
+        let bigint: Vec<Vec<u8>> = bigint
+			.into_iter()
+			.map(|elem| {
+				let mut serialized = vec![0; elem.serialized_size(Compress::Yes)];
+				let mut cursor = Cursor::new(&mut serialized[..]);
+				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+				serialized
+			})
+			.collect();
+        let res = sp_io::crypto::bls12_381_bigint_msm(bases, bigint);
+        todo!()
 	}
 }
 

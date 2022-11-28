@@ -20,8 +20,8 @@
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use ark_bls12_381::{Bls12_381, Fq12};
-use ark_ec::pairing::{MillerLoopOutput, Pairing};
+use ark_bls12_381::{Bls12_381, Fq12, G1Affine, Parameters};
+use ark_ec::{scalar_mul::fixed_base::FixedBase, pairing::{MillerLoopOutput, Pairing}};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use ark_std::io::Cursor;
 use sp_std::vec::Vec;
@@ -108,6 +108,22 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 	let mut cursor = Cursor::new(&mut res_bytes[..]);
 	res.0.serialize_compressed(&mut cursor).unwrap();
 	res_bytes.to_vec()
+}
+
+pub fn msm_bigint(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+	let bases: Vec<_> = a_vec
+		.iter()
+		.map(|a| {
+			let cursor = Cursor::new(&a[..]);
+			<Bls12_381 as Pairing>::G1Affine::deserialize_with_mode(
+				cursor,
+				Compress::Yes,
+				Validate::No,
+			)
+			.unwrap()
+		})
+		.collect();
+	todo!()
 }
 
 #[cfg(test)]

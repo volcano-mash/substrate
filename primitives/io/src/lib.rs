@@ -1088,6 +1088,11 @@ pub trait Crypto {
 	fn bls12_381_final_exponentiation(f12: &[u8]) -> Vec<u8> {
 		sp_arkworks::final_exponentiation(f12)
 	}
+
+	/// Compute a final exponentiation
+	fn bls12_381_bigint_msm(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::msm_bigint(bases, bigints)
+	}
 }
 
 /// Interface that provides functions for hashing with different algorithms.
