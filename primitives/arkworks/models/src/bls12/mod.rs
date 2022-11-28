@@ -2,17 +2,49 @@ use ark_ec::{
 	models::CurveConfig,
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
 };
-use ark_ff::fields::fp12_2over3over2::Fp12;
+use ark_ff::{
+    fields::{
+        fp12_2over3over2::{Fp12, Fp12Config},
+        fp2::Fp2Config,
+        fp6_3over2::Fp6Config,
+        Fp2,
+    },
+    PrimeField,
+};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
 use ark_std::{io::Cursor, marker::PhantomData, vec, vec::Vec};
 use derivative::Derivative;
 
+use crate::short_weierstrass::SWCurveConfig;
+
 #[cfg(feature = "parallel")]
 use rayon::prelude::*;
 
-pub use ark_ec::models::bls12::{
-	Bls12Parameters, TwistType,
-};
+/// A particular BLS12 group can have G2 being either a multiplicative or a
+/// divisive twist.
+pub enum TwistType {
+    M,
+    D,
+}
+
+pub trait Bls12Parameters: 'static {
+    /// Parameterizes the BLS12 family.
+    const X: &'static [u64];
+    /// Is `Self::X` negative?
+    const X_IS_NEGATIVE: bool;
+    /// What kind of twist is this?
+    const TWIST_TYPE: TwistType;
+
+    type Fp: PrimeField + Into<<Self::Fp as PrimeField>::BigInt>;
+    type Fp2Config: Fp2Config<Fp = Self::Fp>;
+    type Fp6Config: Fp6Config<Fp2Config = Self::Fp2Config>;
+    type Fp12Config: Fp12Config<Fp6Config = Self::Fp6Config>;
+    type G1Parameters: SWCurveConfig<BaseField = Self::Fp>;
+    type G2Parameters: SWCurveConfig<
+        BaseField = Fp2<Self::Fp2Config>,
+        ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
+    >;
+}
 
 pub mod g1;
 pub mod g2;

@@ -2,10 +2,9 @@ use ark_std::ops::Neg;
 
 use ark_ec::{
     models::CurveConfig,
-    short_weierstrass::{Affine, Projective, SWCurveConfig},
     AffineRepr, CurveGroup, Group,
 };
-use ark_sub_models::{bls12, bls12::Bls12Parameters};
+use ark_sub_models::{bls12, bls12::Bls12Parameters,short_weierstrass::{Affine, Projective, SWCurveConfig}};
 use ark_ff::{Field, MontFp, Zero};
 use ark_serialize::{Compress, SerializationError};
 

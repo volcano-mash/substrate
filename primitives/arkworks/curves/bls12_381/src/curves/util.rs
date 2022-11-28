@@ -1,6 +1,7 @@
-use ark_ec::{short_weierstrass::Affine, AffineRepr};
+use ark_ec::AffineRepr;
 use ark_ff::{BigInteger384, PrimeField};
 use ark_serialize::SerializationError;
+use ark_sub_models::short_weierstrass::Affine;
 
 use crate::{
     g1::Parameters as G1Parameters, g2::Parameters as G2Parameters, Fq, Fq2, G1Affine, G2Affine,
