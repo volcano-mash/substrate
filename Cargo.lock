@@ -124,13 +124,15 @@ checksum = "29d47fbf90d5149a107494b15a7dc8d69b351be2db3bb9691740e88ec17fd880"
 [[package]]
 name = "ark-algebra-test-templates"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3eef0b339ebc113d9bd3fb7cd666baf2cfe4e1024e0fac23e072d46598bbd0cd"
+source = "git+https://github.com/arkworks-rs/algebra#e062140351e7775d30c8b0167fbef048fcd4535e"
 dependencies = [
  "ark-ec",
  "ark-ff",
  "ark-serialize",
  "ark-std",
+ "num-bigint 0.4.3",
+ "num-integer",
+ "num-traits",
 ]
 
 [[package]]
