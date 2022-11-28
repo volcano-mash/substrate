@@ -21,7 +21,7 @@ use zeroize::Zeroize;
 use derivative::Derivative;
 
 use super::{Projective, SWCurveConfig, SWFlags};
-use crate::AffineRepr;
+use ark_ec::AffineRepr;
 
 /// Affine coordinates for a point on an elliptic curve in short Weierstrass
 /// form, over the base field `P::BaseField`.
