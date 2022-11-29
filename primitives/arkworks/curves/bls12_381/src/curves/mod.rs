@@ -1,8 +1,10 @@
-use ark_sub_models::bls12::{Bls12, Bls12Parameters, HostFunctions, TwistType};
-
+use ark_sub_models::bls12::{Bls12, Bls12Parameters, TwistType};
+use ark_ec::pairing::Pairing;
+use ark_serialize::{CanonicalSerialize, CanonicalDeserialize, Compress};
 use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
-use ark_std::vec::Vec;
-use sp_io::crypto::{bls12_381_final_exponentiation, bls12_381_multi_miller_loop};
+use ark_std::{vec::Vec, vec, io::Cursor};
+use ark_ff::Fp12;
+use sp_io::crypto::{bls12_381_final_exponentiation};
 
 pub mod g1;
 pub mod g2;
@@ -25,13 +27,35 @@ impl Bls12Parameters for Parameters {
 	type Fp12Config = Fq12Config;
 	type G1Parameters = self::g1::Parameters;
 	type G2Parameters = self::g2::Parameters;
-}
 
-pub struct Host;
+	fn multi_miller_loop(a_vec: Vec<ark_sub_models::bls12::G1Prepared<Self>>, b_vec: Vec<ark_sub_models::bls12::G2Prepared<Self>>) -> <Bls12<Self> as Pairing>::TargetField {
+		let a_vec: Vec<Vec<u8>> = a_vec
+			.into_iter()
+			.map(|elem| {
+				let elem: <Bls12<Self> as Pairing>::G1Prepared = elem.into();
+				let mut serialized = vec![0; elem.serialized_size(Compress::Yes)];
+				let mut cursor = Cursor::new(&mut serialized[..]);
+				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+				serialized
+			})
+			.collect();
+		let b_vec = b_vec
+			.into_iter()
+			.map(|elem| {
+				let elem: <Bls12<Self> as Pairing>::G2Prepared = elem.into();
+				let mut serialized = vec![0u8; elem.serialized_size(Compress::Yes)];
+				let mut cursor = Cursor::new(&mut serialized[..]);
+				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+				serialized
+			})
+			.collect();
 
-impl HostFunctions for Host {
-	fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8> {
-		return bls12_381_multi_miller_loop(a_vec, b_vec)
+		let res = sp_io::crypto::bls12_381_multi_miller_loop(a_vec, b_vec);
+		let cursor = Cursor::new(&res[..]);
+		let f: <Bls12<Self> as Pairing>::TargetField =
+			Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
+				.unwrap();
+	    f
 	}
 
 	fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
@@ -39,4 +63,4 @@ impl HostFunctions for Host {
 	}
 }
 
-pub type Bls12_381 = Bls12<Parameters, Host>;
+pub type Bls12_381 = Bls12<Parameters>;

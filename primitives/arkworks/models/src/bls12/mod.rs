@@ -12,7 +12,7 @@ use ark_ff::{
 	PrimeField,
 };
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
-use ark_std::{io::Cursor, marker::PhantomData, vec, vec::Vec};
+use ark_std::{io::Cursor, marker::PhantomData, vec::Vec};
 use derivative::Derivative;
 
 use crate::short_weierstrass::SWCurveConfig;
@@ -27,7 +27,7 @@ pub enum TwistType {
 	D,
 }
 
-pub trait Bls12Parameters: 'static {
+pub trait Bls12Parameters: 'static + Sized {
 	/// Parameterizes the BLS12 family.
 	const X: &'static [u64];
 	/// Is `Self::X` negative?
@@ -44,6 +44,9 @@ pub trait Bls12Parameters: 'static {
 		BaseField = Fp2<Self::Fp2Config>,
 		ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
 	>;
+
+	fn multi_miller_loop(a_vec: Vec<G1Prepared<Self>>, b_vec: Vec<G2Prepared<Self>>) -> Fp12<Self::Fp12Config>;
+	fn final_exponentiation(f12: &[u8]) -> Vec<u8>;
 }
 
 pub mod g1;
@@ -54,19 +57,11 @@ pub use self::{
 	g2::{G2Affine, G2Prepared, G2Projective},
 };
 
-pub trait HostFunctions: 'static {
-	fn multi_miller_loop(a_vec: Vec<Vec<u8>>, b_vec: Vec<Vec<u8>>) -> Vec<u8>;
-	fn final_exponentiation(f12: &[u8]) -> Vec<u8>;
-}
-
 #[derive(Derivative)]
 #[derivative(Copy, Clone, PartialEq, Eq, Debug, Hash)]
-pub struct Bls12<P: Bls12Parameters, Q: HostFunctions> {
-	phantom1: PhantomData<fn() -> P>,
-	phantom2: PhantomData<fn() -> Q>,
-}
+pub struct Bls12<P: Bls12Parameters>(PhantomData<fn() -> P>);
 
-impl<P: Bls12Parameters, Q: HostFunctions> Pairing for Bls12<P, Q> {
+impl<P: Bls12Parameters> Pairing for Bls12<P> {
 	type BaseField = <P::G1Parameters as CurveConfig>::BaseField;
 	type ScalarField = <P::G1Parameters as CurveConfig>::ScalarField;
 	type G1 = G1Projective<P>;
@@ -81,33 +76,22 @@ impl<P: Bls12Parameters, Q: HostFunctions> Pairing for Bls12<P, Q> {
 		a: impl IntoIterator<Item = impl Into<Self::G1Prepared>>,
 		b: impl IntoIterator<Item = impl Into<Self::G2Prepared>>,
 	) -> MillerLoopOutput<Self> {
-		let a_vec: Vec<Vec<u8>> = a
+		let a_vec: Vec<Self::G1Prepared> = a
 			.into_iter()
 			.map(|elem| {
 				let elem: Self::G1Prepared = elem.into();
-				let mut serialized = vec![0; elem.serialized_size(Compress::Yes)];
-				let mut cursor = Cursor::new(&mut serialized[..]);
-				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
-				serialized
+				elem
 			})
 			.collect();
-		let b_vec = b
+		let b_vec: Vec<Self::G2Prepared> = b
 			.into_iter()
 			.map(|elem| {
 				let elem: Self::G2Prepared = elem.into();
-				let mut serialized = vec![0u8; elem.serialized_size(Compress::Yes)];
-				let mut cursor = Cursor::new(&mut serialized[..]);
-				elem.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
-				serialized
+				elem
 			})
 			.collect();
 
-		let res = Q::multi_miller_loop(a_vec, b_vec);
-		let cursor = Cursor::new(&res[..]);
-		let f: Self::TargetField =
-			Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
-				.unwrap();
-
+		let f = P::multi_miller_loop(a_vec, b_vec);
 		MillerLoopOutput(f)
 	}
 
@@ -116,7 +100,7 @@ impl<P: Bls12Parameters, Q: HostFunctions> Pairing for Bls12<P, Q> {
 		let mut cursor = Cursor::new(&mut out[..]);
 		f.0.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
 
-		let res = Q::final_exponentiation(&out[..]);
+		let res = P::final_exponentiation(&out[..]);
 
 		let cursor = Cursor::new(&res[..]);
 		let r: Self::TargetField =
