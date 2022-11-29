@@ -58,8 +58,19 @@ impl Bls12Parameters for Parameters {
 	    f
 	}
 
-	fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
-		return bls12_381_final_exponentiation(f12)
+	fn final_exponentiation(f12: <Bls12<Self> as Pairing>::TargetField) -> <Bls12<Self> as Pairing>::TargetField {
+		let mut out: [u8; 576] = [0; 576];
+		let mut cursor = Cursor::new(&mut out[..]);
+		f12.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+
+		let res = bls12_381_final_exponentiation(&out);
+
+		let cursor = Cursor::new(&res[..]);
+		let res: <Bls12<Self> as Pairing>::TargetField =
+			Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
+				.unwrap();
+
+		res
 	}
 }
 

@@ -11,8 +11,7 @@ use ark_ff::{
 	},
 	PrimeField,
 };
-use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
-use ark_std::{io::Cursor, marker::PhantomData, vec::Vec};
+use ark_std::{marker::PhantomData, vec::Vec};
 use derivative::Derivative;
 
 use crate::short_weierstrass::SWCurveConfig;
@@ -46,7 +45,7 @@ pub trait Bls12Parameters: 'static + Sized {
 	>;
 
 	fn multi_miller_loop(a_vec: Vec<G1Prepared<Self>>, b_vec: Vec<G2Prepared<Self>>) -> Fp12<Self::Fp12Config>;
-	fn final_exponentiation(f12: &[u8]) -> Vec<u8>;
+	fn final_exponentiation(f12: Fp12<Self::Fp12Config>) -> Fp12<Self::Fp12Config>;
 }
 
 pub mod g1;
@@ -96,17 +95,19 @@ impl<P: Bls12Parameters> Pairing for Bls12<P> {
 	}
 
 	fn final_exponentiation(f: MillerLoopOutput<Self>) -> Option<PairingOutput<Self>> {
-		let mut out: [u8; 576] = [0; 576];
-		let mut cursor = Cursor::new(&mut out[..]);
-		f.0.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+		let res = P::final_exponentiation(f.0);
+		Some(PairingOutput(res))
+		// let mut out: [u8; 576] = [0; 576];
+		// let mut cursor = Cursor::new(&mut out[..]);
+		// f.0.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
 
-		let res = P::final_exponentiation(&out[..]);
+		// let res = P::final_exponentiation(&out[..]);
 
-		let cursor = Cursor::new(&res[..]);
-		let r: Self::TargetField =
-			Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
-				.unwrap();
+		// let cursor = Cursor::new(&res[..]);
+		// let r: Self::TargetField =
+		// 	Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
+		// 		.unwrap();
 
-		Some(PairingOutput(r))
+		// Some(PairingOutput(r))
 	}
 }
