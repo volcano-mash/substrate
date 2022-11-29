@@ -20,11 +20,15 @@
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use ark_bls12_381::{Bls12_381, Fq12, G1Affine, Parameters};
-use ark_ec::{scalar_mul::fixed_base::FixedBase, pairing::{MillerLoopOutput, Pairing}};
+use ark_bls12_381::{Bls12_381, Fq12};
+use ark_ec::{
+	models::CurveConfig,
+	pairing::{MillerLoopOutput, Pairing},
+};
+use ark_ff::PrimeField;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress, Validate};
 use ark_std::io::Cursor;
-use sp_std::vec::Vec;
+use sp_std::{vec, vec::Vec};
 
 const F12_COMPRESSED_SIZE: usize = 576;
 
@@ -110,8 +114,9 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 	res_bytes.to_vec()
 }
 
-pub fn msm_bigint(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
-	let bases: Vec<_> = a_vec
+/// Compute a multi scalar multiplication through arkworks
+pub fn msm_bigint_g1(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+	let bases: Vec<_> = bases
 		.iter()
 		.map(|a| {
 			let cursor = Cursor::new(&a[..]);
@@ -123,7 +128,24 @@ pub fn msm_bigint(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
 			.unwrap()
 		})
 		.collect();
-	todo!()
+	let bigints: Vec<_> = bigints
+		.iter()
+		.map(|a| {
+			let cursor = Cursor::new(&a[..]);
+			<<ark_bls12_381::g1::Parameters as CurveConfig>::ScalarField as PrimeField>::BigInt::deserialize_with_mode(
+				cursor,
+				Compress::Yes,
+				Validate::No,
+			)
+			.unwrap()
+		})
+		.collect();
+	let result =
+		<<Bls12_381 as Pairing>::G1 as ark_ec::VariableBaseMSM>::msm_bigint(&bases, &bigints);
+	let mut serialized = vec![0; result.serialized_size(Compress::Yes)];
+	let mut cursor = Cursor::new(&mut serialized[..]);
+	result.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+	serialized
 }
 
 #[cfg(test)]

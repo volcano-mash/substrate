@@ -1090,8 +1090,8 @@ pub trait Crypto {
 	}
 
 	/// Compute a final exponentiation
-	fn bls12_381_bigint_msm(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
-		sp_arkworks::msm_bigint(bases, bigints)
+	fn bls12_381_bigint_msm_g1(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::msm_bigint_g1(bases, bigints)
 	}
 }
 
