@@ -114,7 +114,7 @@ pub fn final_exponentiation(f12: &[u8]) -> Vec<u8> {
 	res_bytes.to_vec()
 }
 
-/// Compute a multi scalar multiplication through arkworks
+/// Compute a multi scalar multiplication on G! through arkworks
 pub fn msm_bigint_g1(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
 	let bases: Vec<_> = bases
 		.iter()
@@ -142,6 +142,40 @@ pub fn msm_bigint_g1(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
 		.collect();
 	let result =
 		<<Bls12_381 as Pairing>::G1 as ark_ec::VariableBaseMSM>::msm_bigint(&bases, &bigints);
+	let mut serialized = vec![0; result.serialized_size(Compress::Yes)];
+	let mut cursor = Cursor::new(&mut serialized[..]);
+	result.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
+	serialized
+}
+
+/// Compute a multi scalar multiplication on G! through arkworks
+pub fn msm_bigint_g2(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+	let bases: Vec<_> = bases
+		.iter()
+		.map(|a| {
+			let cursor = Cursor::new(&a[..]);
+			<Bls12_381 as Pairing>::G2Affine::deserialize_with_mode(
+				cursor,
+				Compress::Yes,
+				Validate::No,
+			)
+			.unwrap()
+		})
+		.collect();
+	let bigints: Vec<_> = bigints
+		.iter()
+		.map(|a| {
+			let cursor = Cursor::new(&a[..]);
+			<<ark_bls12_381::g2::Parameters as CurveConfig>::ScalarField as PrimeField>::BigInt::deserialize_with_mode(
+				cursor,
+				Compress::Yes,
+				Validate::No,
+			)
+			.unwrap()
+		})
+		.collect();
+	let result =
+		<<Bls12_381 as Pairing>::G2 as ark_ec::VariableBaseMSM>::msm_bigint(&bases, &bigints);
 	let mut serialized = vec![0; result.serialized_size(Compress::Yes)];
 	let mut cursor = Cursor::new(&mut serialized[..]);
 	result.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
