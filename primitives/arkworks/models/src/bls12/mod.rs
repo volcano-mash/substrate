@@ -1,6 +1,7 @@
 use ark_ec::{
 	models::CurveConfig,
 	pairing::{MillerLoopOutput, Pairing, PairingOutput},
+	AffineRepr,
 };
 use ark_ff::{
 	fields::{
@@ -10,6 +11,7 @@ use ark_ff::{
 		Fp2,
 	},
 	PrimeField,
+	CyclotomicMultSubgroup,
 };
 use ark_std::{marker::PhantomData, vec::Vec};
 use derivative::Derivative;
@@ -60,6 +62,37 @@ pub use self::{
 #[derivative(Copy, Clone, PartialEq, Eq, Debug, Hash)]
 pub struct Bls12<P: Bls12Parameters>(PhantomData<fn() -> P>);
 
+impl<P: Bls12Parameters> Bls12<P> {
+    // Evaluate the line function at point p.
+    fn ell(f: &mut Fp12<P::Fp12Config>, coeffs: &g2::EllCoeff<P>, p: &G1Affine<P>) {
+        let mut c0 = coeffs.0;
+        let mut c1 = coeffs.1;
+        let mut c2 = coeffs.2;
+        let (px, py) = p.xy().unwrap();
+
+        match P::TWIST_TYPE {
+            TwistType::M => {
+                c2.mul_assign_by_fp(py);
+                c1.mul_assign_by_fp(px);
+                f.mul_by_014(&c0, &c1, &c2);
+            },
+            TwistType::D => {
+                c0.mul_assign_by_fp(py);
+                c1.mul_assign_by_fp(px);
+                f.mul_by_034(&c0, &c1, &c2);
+            },
+        }
+    }
+
+    // Exponentiates `f` by `Self::X`, and stores the result in `result`.
+    fn exp_by_x(f: &Fp12<P::Fp12Config>, result: &mut Fp12<P::Fp12Config>) {
+        *result = f.cyclotomic_exp(P::X);
+        if P::X_IS_NEGATIVE {
+            result.cyclotomic_inverse_in_place();
+        }
+    }
+}
+
 impl<P: Bls12Parameters> Pairing for Bls12<P> {
 	type BaseField = <P::G1Parameters as CurveConfig>::BaseField;
 	type ScalarField = <P::G1Parameters as CurveConfig>::ScalarField;
@@ -97,17 +130,5 @@ impl<P: Bls12Parameters> Pairing for Bls12<P> {
 	fn final_exponentiation(f: MillerLoopOutput<Self>) -> Option<PairingOutput<Self>> {
 		let res = P::final_exponentiation(f.0);
 		Some(PairingOutput(res))
-		// let mut out: [u8; 576] = [0; 576];
-		// let mut cursor = Cursor::new(&mut out[..]);
-		// f.0.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
-
-		// let res = P::final_exponentiation(&out[..]);
-
-		// let cursor = Cursor::new(&res[..]);
-		// let r: Self::TargetField =
-		// 	Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
-		// 		.unwrap();
-
-		// Some(PairingOutput(r))
 	}
 }
