@@ -6,7 +6,7 @@ use ark_std::io::{Read, Write};
 
 use ark_ff::{fields::Field, PrimeField};
 
-use ark_ec::{AffineRepr, Group};
+use ark_ec::{AffineRepr, Group, scalar_mul::variable_base::VariableBaseMSM};
 
 use num_traits::Zero;
 
@@ -184,5 +184,8 @@ pub trait SWCurveConfig: ark_ec::CurveConfig {
 	fn msm_bigint(
 		bases: &[Affine<Self>],
 		bigints: &[<Self::ScalarField as PrimeField>::BigInt],
-	) -> Projective<Self>;
+	) -> Projective<Self>
+	{
+       VariableBaseMSM::msm_bigint(bases, bigints)
+	}
 }
