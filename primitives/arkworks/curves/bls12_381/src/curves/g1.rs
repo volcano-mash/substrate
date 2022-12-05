@@ -160,12 +160,7 @@ impl SWCurveConfig for Parameters {
 			.collect();
 		let result = sp_io::crypto::bls12_381_bigint_msm_g1(bases, bigints);
 		let cursor = Cursor::new(&result[..]);
-		let result = Self::deserialize_with_mode(
-				cursor,
-				Compress::Yes,
-				Validate::No,
-			)
-			.unwrap();
+		let result = Self::deserialize_with_mode(cursor, Compress::Yes, Validate::No).unwrap();
 		result.into()
 	}
 }

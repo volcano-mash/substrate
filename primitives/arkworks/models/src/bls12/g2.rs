@@ -12,9 +12,9 @@ pub type G2Affine<P> = Affine<<P as Bls12Parameters>::G2Parameters>;
 pub type G2Projective<P> = Projective<<P as Bls12Parameters>::G2Parameters>;
 
 pub(crate) type EllCoeff<P> = (
-    Fp2<<P as Bls12Parameters>::Fp2Config>,
-    Fp2<<P as Bls12Parameters>::Fp2Config>,
-    Fp2<<P as Bls12Parameters>::Fp2Config>,
+	Fp2<<P as Bls12Parameters>::Fp2Config>,
+	Fp2<<P as Bls12Parameters>::Fp2Config>,
+	Fp2<<P as Bls12Parameters>::Fp2Config>,
 );
 
 #[derive(Derivative, CanonicalSerialize, CanonicalDeserialize)]

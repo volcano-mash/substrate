@@ -1,4 +1,4 @@
-use ark_std::{ops::Neg, io::Cursor, vec, vec::Vec};
+use ark_std::{io::Cursor, ops::Neg, vec, vec::Vec};
 
 use ark_ec::{models::CurveConfig, AffineRepr, CurveGroup, Group};
 use ark_ff::{Field, MontFp, PrimeField, Zero};
@@ -203,12 +203,7 @@ impl SWCurveConfig for Parameters {
 			.collect();
 		let result = sp_io::crypto::bls12_381_bigint_msm_g2(bases, bigints);
 		let cursor = Cursor::new(&result[..]);
-		let result = Self::deserialize_with_mode(
-				cursor,
-				Compress::Yes,
-				Validate::No,
-			)
-			.unwrap();
+		let result = Self::deserialize_with_mode(cursor, Compress::Yes, Validate::No).unwrap();
 		result.into()
 	}
 }

@@ -10,8 +10,7 @@ use ark_ff::{
 		fp6_3over2::Fp6Config,
 		Fp2,
 	},
-	PrimeField,
-	CyclotomicMultSubgroup,
+	CyclotomicMultSubgroup, PrimeField,
 };
 use ark_std::{marker::PhantomData, vec::Vec};
 use derivative::Derivative;
@@ -46,7 +45,10 @@ pub trait Bls12Parameters: 'static + Sized {
 		ScalarField = <Self::G1Parameters as CurveConfig>::ScalarField,
 	>;
 
-	fn multi_miller_loop(a_vec: Vec<G1Prepared<Self>>, b_vec: Vec<G2Prepared<Self>>) -> Fp12<Self::Fp12Config>;
+	fn multi_miller_loop(
+		a_vec: Vec<G1Prepared<Self>>,
+		b_vec: Vec<G2Prepared<Self>>,
+	) -> Fp12<Self::Fp12Config>;
 	fn final_exponentiation(f12: Fp12<Self::Fp12Config>) -> Fp12<Self::Fp12Config>;
 }
 
@@ -63,34 +65,34 @@ pub use self::{
 pub struct Bls12<P: Bls12Parameters>(PhantomData<fn() -> P>);
 
 impl<P: Bls12Parameters> Bls12<P> {
-    // Evaluate the line function at point p.
-    fn ell(f: &mut Fp12<P::Fp12Config>, coeffs: &g2::EllCoeff<P>, p: &G1Affine<P>) {
-        let mut c0 = coeffs.0;
-        let mut c1 = coeffs.1;
-        let mut c2 = coeffs.2;
-        let (px, py) = p.xy().unwrap();
+	// Evaluate the line function at point p.
+	fn ell(f: &mut Fp12<P::Fp12Config>, coeffs: &g2::EllCoeff<P>, p: &G1Affine<P>) {
+		let mut c0 = coeffs.0;
+		let mut c1 = coeffs.1;
+		let mut c2 = coeffs.2;
+		let (px, py) = p.xy().unwrap();
 
-        match P::TWIST_TYPE {
-            TwistType::M => {
-                c2.mul_assign_by_fp(py);
-                c1.mul_assign_by_fp(px);
-                f.mul_by_014(&c0, &c1, &c2);
-            },
-            TwistType::D => {
-                c0.mul_assign_by_fp(py);
-                c1.mul_assign_by_fp(px);
-                f.mul_by_034(&c0, &c1, &c2);
-            },
-        }
-    }
+		match P::TWIST_TYPE {
+			TwistType::M => {
+				c2.mul_assign_by_fp(py);
+				c1.mul_assign_by_fp(px);
+				f.mul_by_014(&c0, &c1, &c2);
+			},
+			TwistType::D => {
+				c0.mul_assign_by_fp(py);
+				c1.mul_assign_by_fp(px);
+				f.mul_by_034(&c0, &c1, &c2);
+			},
+		}
+	}
 
-    // Exponentiates `f` by `Self::X`, and stores the result in `result`.
-    fn exp_by_x(f: &Fp12<P::Fp12Config>, result: &mut Fp12<P::Fp12Config>) {
-        *result = f.cyclotomic_exp(P::X);
-        if P::X_IS_NEGATIVE {
-            result.cyclotomic_inverse_in_place();
-        }
-    }
+	// Exponentiates `f` by `Self::X`, and stores the result in `result`.
+	fn exp_by_x(f: &Fp12<P::Fp12Config>, result: &mut Fp12<P::Fp12Config>) {
+		*result = f.cyclotomic_exp(P::X);
+		if P::X_IS_NEGATIVE {
+			result.cyclotomic_inverse_in_place();
+		}
+	}
 }
 
 impl<P: Bls12Parameters> Pairing for Bls12<P> {

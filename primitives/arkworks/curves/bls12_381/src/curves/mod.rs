@@ -1,10 +1,10 @@
-use ark_sub_models::bls12::{Bls12, Bls12Parameters, TwistType};
-use ark_ec::pairing::Pairing;
-use ark_serialize::{CanonicalSerialize, CanonicalDeserialize, Compress};
 use crate::{Fq, Fq12Config, Fq2Config, Fq6Config};
-use ark_std::{vec::Vec, vec, io::Cursor};
+use ark_ec::pairing::Pairing;
 use ark_ff::Fp12;
-use sp_io::crypto::{bls12_381_final_exponentiation};
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, Compress};
+use ark_std::{io::Cursor, vec, vec::Vec};
+use ark_sub_models::bls12::{Bls12, Bls12Parameters, TwistType};
+use sp_io::crypto::bls12_381_final_exponentiation;
 
 pub mod g1;
 pub mod g2;
@@ -28,7 +28,10 @@ impl Bls12Parameters for Parameters {
 	type G1Parameters = self::g1::Parameters;
 	type G2Parameters = self::g2::Parameters;
 
-	fn multi_miller_loop(a_vec: Vec<ark_sub_models::bls12::G1Prepared<Self>>, b_vec: Vec<ark_sub_models::bls12::G2Prepared<Self>>) -> <Bls12<Self> as Pairing>::TargetField {
+	fn multi_miller_loop(
+		a_vec: Vec<ark_sub_models::bls12::G1Prepared<Self>>,
+		b_vec: Vec<ark_sub_models::bls12::G2Prepared<Self>>,
+	) -> <Bls12<Self> as Pairing>::TargetField {
 		let a_vec: Vec<Vec<u8>> = a_vec
 			.into_iter()
 			.map(|elem| {
@@ -55,10 +58,12 @@ impl Bls12Parameters for Parameters {
 		let f: <Bls12<Self> as Pairing>::TargetField =
 			Fp12::deserialize_with_mode(cursor, Compress::Yes, ark_serialize::Validate::No)
 				.unwrap();
-	    f
+		f
 	}
 
-	fn final_exponentiation(f12: <Bls12<Self> as Pairing>::TargetField) -> <Bls12<Self> as Pairing>::TargetField {
+	fn final_exponentiation(
+		f12: <Bls12<Self> as Pairing>::TargetField,
+	) -> <Bls12<Self> as Pairing>::TargetField {
 		let mut out: [u8; 576] = [0; 576];
 		let mut cursor = Cursor::new(&mut out[..]);
 		f12.serialize_with_mode(&mut cursor, Compress::Yes).unwrap();
