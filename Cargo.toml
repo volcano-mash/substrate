@@ -312,14 +312,3 @@ inherits = "release"
 lto = "fat"
 # https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units
 codegen-units = 1
-
-
-[patch.crates-io]
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra" }
-ark-ff = { git = "https://github.com/arkworks-rs/algebra" }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra" }
-ark-poly = { git = "https://github.com/arkworks-rs/algebra" }
-ark-std = { git = "https://github.com/arkworks-rs/std" }
-
-[patch.'https://github.com/volcano-mash/substrate']
-sp-io = { path = "primitives/io" }

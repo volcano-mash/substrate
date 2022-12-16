@@ -57,9 +57,6 @@ use sp_core::{
 };
 
 #[cfg(feature = "std")]
-use sp_arkworks::*;
-
-#[cfg(feature = "std")]
 use sp_trie::{LayoutV0, LayoutV1, TrieConfiguration};
 
 use sp_runtime_interface::{
@@ -1090,6 +1087,16 @@ pub trait Crypto {
 	/// Compute a final exponentiation
 	fn bls12_381_final_exponentiation(f12: &[u8]) -> Vec<u8> {
 		sp_arkworks::final_exponentiation(f12)
+	}
+
+	/// Compute a bigint_msm on G1
+	fn bls12_381_bigint_msm_g1(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::msm_bigint_g1(bases, bigints)
+	}
+
+	/// Compute a bigint_msm on G2
+	fn bls12_381_bigint_msm_g2(bases: Vec<Vec<u8>>, bigints: Vec<Vec<u8>>) -> Vec<u8> {
+		sp_arkworks::msm_bigint_g2(bases, bigints)
 	}
 }
 

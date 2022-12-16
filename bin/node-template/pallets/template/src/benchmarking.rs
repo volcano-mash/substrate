@@ -12,5 +12,9 @@ benchmarks! {
 		let caller: T::AccountId = whitelisted_caller();
 	}: _(RawOrigin::Signed(caller), 0)
 
+	verify_groth16 {
+		let caller: T::AccountId = whitelisted_caller();
+	}: _(RawOrigin::Signed(caller), 0)
+
 	impl_benchmark_test_suite!(Template, crate::mock::new_test_ext(), crate::mock::Test);
 }

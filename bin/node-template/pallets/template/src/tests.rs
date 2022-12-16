@@ -2,12 +2,18 @@ use crate::{mock::*, Error};
 use frame_support::{assert_noop, assert_ok};
 
 #[test]
-fn it_works_for_default_value() {
+fn pairing_computation_works() {
 	new_test_ext().execute_with(|| {
 		// Dispatch a signed extrinsic.
-		assert_ok!(TemplateModule::do_something(RuntimeOrigin::signed(1), 42));
-		// Read pallet storage and assert an expected result.
-		assert_eq!(TemplateModule::something(), Some(42));
+		assert_ok!(TemplateModule::pairing_arkworks(RuntimeOrigin::signed(1), 42));
+	});
+}
+
+#[test]
+fn groth16_verification_works() {
+	new_test_ext().execute_with(|| {
+		// Dispatch a signed extrinsic.
+		assert_ok!(TemplateModule::verify_groth16(RuntimeOrigin::signed(1), 42));
 	});
 }
 
